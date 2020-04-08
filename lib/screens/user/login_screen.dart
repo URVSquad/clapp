@@ -83,6 +83,7 @@ class _LoginScreenState extends State<LoginScreen> {
         builder: (context, AsyncSnapshot<UserService> snapshot) {
           if (snapshot.hasData) {
             if (_isAuthenticated) {
+              print("CreTING PROFILE SCREEN HERE");
               return new ProfileScreen();
             }
             final Size screenSize = MediaQuery.of(context).size;

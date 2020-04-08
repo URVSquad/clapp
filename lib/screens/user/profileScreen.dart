@@ -71,9 +71,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
         label: 'OK',
         onPressed: () async {
           if (signOutSuccess) {
-            setState(() {
-
-            });
+            print("HERRE IS THE PROBLEM JERO");
+            Navigator.of(context).popUntil((route) => route.isFirst);
           }
         },
       ),
