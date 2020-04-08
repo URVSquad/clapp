@@ -17,51 +17,56 @@ class _SignUpScreenState extends State<SignUpScreen> {
   String confirmationCode;
   User _user = new User();
   final _userService = new UserService(global.userPool);
+  final TextEditingController _pass = TextEditingController();
 
 
   void submit(BuildContext context) async {
-    _formKey.currentState.save();
+    if (_formKey.currentState.validate()){
+      _formKey.currentState.save();
 
-    String message;
-    bool signUpSuccess = false;
-    try {
-      _user = await _userService.signUp(_user.email, _user.password, _user.name);
-      signUpSuccess = true;
-      message = 'User sign up successful!';
-    } on CognitoClientException catch (e) {
-      if (e.code == 'UsernameExistsException' ||
-          e.code == 'InvalidParameterException' ||
-          e.code == 'ResourceNotFoundException') {
-        message = e.message;
-      } else {
-        message = 'Unknown client error occurred';
+      String message;
+      bool signUpSuccess = false;
+      try {
+        _user = await _userService.signUp(_user.username, _user.password, _user.name, _user.email);
+        signUpSuccess = true;
+        message = 'User sign up successful!';
+      } on CognitoClientException catch (e) {
+        print(e);
+        if (e.code == 'UsernameExistsException' ||
+            e.code == 'InvalidParameterException' ||
+            e.code == 'ResourceNotFoundException') {
+          message = e.message;
+        } else {
+          message = 'Unknown client error occurred';
+        }
+      } catch (e) {
+        message = 'Unknown error occurred';
       }
-    } catch (e) {
-      message = 'Unknown error occurred';
+
+      final snackBar = new SnackBar(
+        content: new Text(message),
+        action: new SnackBarAction(
+          label: 'OK',
+          onPressed: () {
+            if (signUpSuccess) {
+              Navigator.pop(context);
+              if (!_user.confirmed) {
+                Navigator.push(
+                  context,
+                  new MaterialPageRoute(
+                      builder: (context) =>
+                      new ConfirmationScreen()),
+                );
+              }
+            }
+          },
+        ),
+        duration: new Duration(seconds: 30),
+      );
+
+      Scaffold.of(context).showSnackBar(snackBar);
     }
 
-    final snackBar = new SnackBar(
-      content: new Text(message),
-      action: new SnackBarAction(
-        label: 'OK',
-        onPressed: () {
-          if (signUpSuccess) {
-            Navigator.pop(context);
-            if (!_user.confirmed) {
-              Navigator.push(
-                context,
-                new MaterialPageRoute(
-                    builder: (context) =>
-                    new ConfirmationScreen()),
-              );
-            }
-          }
-        },
-      ),
-      duration: new Duration(seconds: 30),
-    );
-
-    Scaffold.of(context).showSnackBar(snackBar);
   }
 
   @override
@@ -78,38 +83,83 @@ class _SignUpScreenState extends State<SignUpScreen> {
               key: _formKey,
               child: new ListView(
                 children: <Widget>[
-                  new ListTile(
-                    leading: const Icon(Icons.account_box),
-                    title: new TextFormField(
-                      decoration: new InputDecoration(labelText: 'Name'),
-                      onSaved: (String name) {
-                        _user.name = name;
-                      },
-                    ),
-                  ),
-                  new ListTile(
-                    leading: const Icon(Icons.email),
-                    title: new TextFormField(
-                      decoration: new InputDecoration(
-                          hintText: 'example@inspire.my', labelText: 'Email'),
-                      keyboardType: TextInputType.emailAddress,
-                      onSaved: (String email) {
-                        _user.email = email;
-                      },
-                    ),
-                  ),
-                  new ListTile(
-                    leading: const Icon(Icons.lock),
-                    title: new TextFormField(
-                      decoration: new InputDecoration(
-                        hintText: 'Password!',
+                  new Container(
+                    height: 85,
+                    child: new ListTile(
+                      leading: const Icon(Icons.account_box),
+                      title: new TextFormField(
+                        decoration: new InputDecoration(labelText: 'Nombre'),
+                        validator: validateName,
+                        onSaved: (String name) {
+                          _user.name = name;
+                        },
                       ),
-                      obscureText: true,
-                      onSaved: (String password) {
-                        _user.password = password;
-                      },
                     ),
                   ),
+                  new Container(
+                    height: 85,
+                    child: new ListTile(
+                      leading: const Icon(Icons.alternate_email),
+                      title: new TextFormField(
+                        decoration: new InputDecoration(
+                          hintText: 'mi_nombre_de_usuario', labelText: 'Nombre de usuario'),
+                        keyboardType: TextInputType.text,
+                        validator: validateUsername,
+                        onSaved: (String username) {
+                          _user.username = username;
+                        },
+                      ),
+                    ),
+                  ),
+                  new Container(
+                    height: 85,
+                    child: new ListTile(
+                      leading: const Icon(Icons.email),
+                      title: new TextFormField(
+                        decoration: new InputDecoration(
+                            hintText: 'correo@correo.com', labelText: 'Correo electrónico'),
+                        keyboardType: TextInputType.emailAddress,
+                        validator: validateEmail,
+                        onSaved: (String email) {
+                          _user.email = email;
+                        },
+                      ),
+                    ),
+                  ),
+                  new Container(
+                    height: 85,
+                    child: new ListTile(
+                      leading: const Icon(Icons.lock),
+                      title: new TextFormField(
+                        decoration: new InputDecoration(
+                          hintText: 'Password!',
+                        ),
+                        obscureText: true,
+                        controller: _pass,
+                        validator: validatePassword,
+                        onSaved: (String password) {
+                          _user.password = password;
+                        },
+                      ),
+                    ),
+                  ),
+                  new Container(
+                    height: 85,
+                    child: new ListTile(
+                      leading: const Icon(Icons.lock),
+                      title: new TextFormField(
+                        decoration: new InputDecoration(
+                          hintText: 'Password!',
+                        ),
+                        validator: matchPassword,
+                        obscureText: true,
+                        onSaved: (String password) {
+                          _user.repeatedPassword = password;
+                        },
+                      ),
+                    ),
+                  ),
+
                   new Container(
                     padding: new EdgeInsets.all(20.0),
                     width: screenSize.width,
@@ -134,5 +184,51 @@ class _SignUpScreenState extends State<SignUpScreen> {
         },
       ),
     );
+  }
+
+  String validateName(String text){
+    if(text.isEmpty){
+      return 'Tienes que introducir tu nombre';
+    }
+    return null;
+  }
+
+  String validateEmail(String email) {
+    Pattern pattern =
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+    RegExp regex = new RegExp(pattern);
+    print(regex.allMatches(email));
+    if (!regex.hasMatch(email))
+      return 'Parece que esto no es un correo electrónico';
+    else
+      return null;
+  }
+
+  String validateUsername(String username){
+    Pattern pattern = r'^([\w]+)$';
+    RegExp regex = new RegExp(pattern);
+    print(regex.allMatches(username));
+    if (!regex.hasMatch(username))
+      return 'Este no es un nombre de usuario correcto';
+    else
+      return null;
+  }
+
+  String validatePassword(String password){
+    if (password != null && password.length < 8){
+      return 'La contraseña debe tener almenos 8 carácteres';
+    }
+    return null;
+  }
+
+  String matchPassword(String password){
+    String result = validatePassword(password);
+    if (result != null){
+      return result;
+    }
+    else if(password == _pass.text){
+      return null;
+    }
+    return 'Las contraseñas no coinciden';
   }
 }

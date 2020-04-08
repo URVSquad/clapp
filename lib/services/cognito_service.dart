@@ -112,18 +112,19 @@ class UserService {
   }
 
   /// Sign up new user
-  Future<User> signUp(String email, String password, String name) async {
+  Future<User> signUp(String username, String password, String name, String email) async {
     CognitoUserPoolData data;
     final userAttributes = [
       new AttributeArg(name: 'name', value: name),
-      new AttributeArg(name: 'email', value: "roger.bosch.mateo@gmail.com"),
+      new AttributeArg(name: 'email', value: email),
     ];
     data =
-    await _userPool.signUp(email, password, userAttributes: userAttributes);
+    await _userPool.signUp(username, password, userAttributes: userAttributes);
 
     final user = new User();
-    user.email = email;
+    user.username = username;
     user.name = name;
+    user.email = email;
     user.confirmed = data.userConfirmed;
 
     return user;

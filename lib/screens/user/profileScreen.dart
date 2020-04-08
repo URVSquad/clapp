@@ -39,7 +39,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
       if (e.code == 'NotAuthorizedException') {
         print("HEREEE ProfileScreenState");
         await _userService.signOut();
-        Navigator.pop(context);
+        setState(() {
+
+        });
       }
       throw e;
     }
@@ -71,8 +73,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
         label: 'OK',
         onPressed: () async {
           if (signOutSuccess) {
-            print("HERRE IS THE PROBLEM JERO");
-            Navigator.of(context).popUntil((route) => route.isFirst);
+              Navigator.push(
+                context,
+                new MaterialPageRoute(
+                    builder: (context) => new LoginScreen()),
+              );
           }
         },
       ),
