@@ -1,6 +1,8 @@
 import 'package:betogether/models/user.dart';
+import 'package:betogether/screens/user/confirmation_screen.dart';
 import 'package:betogether/screens/user/profileScreen.dart';
 import 'package:betogether/screens/user/signup_screen.dart';
+import 'package:betogether/screens/user/singup_login_screen.dart';
 import 'package:betogether/services/cognito_service.dart';
 import 'package:amazon_cognito_identity_dart_2/src/cognito_user_pool.dart';
 import 'package:flutter/material.dart';
@@ -45,7 +47,7 @@ class _InterfacePageState extends State<InterfacePage> {
               new HomeScreen(),
               new ListScreen(),
               new AddScreen(),
-              open_profile_screen(context)
+              new SignupLoginScreen()
             ],
           ),
           bottomNavigationBar: new TabBar(
@@ -84,17 +86,8 @@ class _InterfacePageState extends State<InterfacePage> {
           if (_isAuthenticated){
             return ProfileScreen();
           }
-          else if(_user == null){
-            _user = new User();
-            return new SignUpScreen();
-          }
-          else if(!_user.confirmed){
-            ///TODO: Confirm account
-            _user = new User();
-            return new SignUpScreen();
-          }
-          else{
-            return new Text("Shouldn't be here");
+          else {
+            return new SignupLoginScreen();
           }
 
         }

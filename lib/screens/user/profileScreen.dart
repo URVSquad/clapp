@@ -3,6 +3,8 @@ import 'dart:developer';
 import 'package:amazon_cognito_identity_dart_2/sig_v4.dart';
 import 'package:betogether/models/user.dart';
 import 'package:amazon_cognito_identity_dart_2/src/cognito_client_exceptions.dart';
+import 'package:betogether/screens/user/signup_screen.dart';
+import 'package:betogether/screens/user/singup_login_screen.dart';
 import 'package:betogether/services/cognito_service.dart';
 import 'package:betogether/services/pools_vars.dart' as global;
 import 'package:flutter/material.dart';
@@ -31,17 +33,54 @@ class _ProfileScreenState extends State<ProfileScreen> {
         // get user attributes from cognito
         _user = await _userService.getCurrentUser();
 
-        // get session credentials
-        final credentials = await _userService.getCredentials();
       }
       return _userService;
     } on CognitoClientException catch (e) {
       if (e.code == 'NotAuthorizedException') {
+        print("HEREEE ProfileScreenState");
         await _userService.signOut();
         Navigator.pop(context);
       }
       throw e;
     }
+  }
+
+  logout(BuildContext context) async {
+    String message;
+    bool signOutSuccess = false;
+    try {
+      print("LOGOUT BY PRESSING BUTTON");
+      await _userService.signOut();
+      message = 'User sucessfully logged out!';
+      signOutSuccess = true;
+    } on CognitoClientException catch (e) {
+      if (e.code == 'InvalidParameterException' ||
+          e.code == 'NotAuthorizedException' ||
+          e.code == 'UserNotFoundException' ||
+          e.code == 'ResourceNotFoundException') {
+        message = e.message;
+      } else {
+        message = 'An unknown client error occured';
+      }
+    } catch (e) {
+      message = 'An unknown error occurred';
+    }
+    final snackBar = new SnackBar(
+      content: new Text(message),
+      action: new SnackBarAction(
+        label: 'OK',
+        onPressed: () async {
+          if (signOutSuccess) {
+            setState(() {
+
+            });
+          }
+        },
+      ),
+      duration: new Duration(seconds: 30),
+    );
+
+    Scaffold.of(context).showSnackBar(snackBar);
   }
 
   @override
@@ -65,6 +104,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     new Text(
                       'Welcome ${_user.name}!',
                       style: Theme.of(context).textTheme.display1,
+                    ),
+                    new RaisedButton(
+                      child: new Text(
+                        'Log out',
+                        style: new TextStyle(color: Colors.white),
+                      ),
+                      onPressed: () => logout(context),
+                      color: Colors.blue,
                     ),
                   ],
                 ),

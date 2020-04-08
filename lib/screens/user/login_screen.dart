@@ -58,7 +58,7 @@ class _LoginScreenState extends State<LoginScreen> {
         label: 'OK',
         onPressed: () async {
           if (_user.hasAccess) {
-            Navigator.pop(context);
+            Navigator.of(context).popUntil((route) => route.isFirst);
             if (!_user.confirmed) {
               Navigator.push(
                 context,
