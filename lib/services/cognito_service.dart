@@ -3,8 +3,7 @@ import 'dart:convert';
 import 'package:amazon_cognito_identity_dart_2/cognito.dart';
 import 'package:betogether/models/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-const _identityPoolId = 'eu-west-2:12a0d80f-f231-4c6d-9ce0-11025b35f7f9';
+import 'pools_vars.dart' as global;
 
 class UserService {
   CognitoUserPool _userPool;
@@ -49,7 +48,8 @@ class UserService {
     if (_cognitoUser == null || _session == null) {
       return null;
     }
-    credentials = new CognitoCredentials(_identityPoolId, _userPool);
+
+    credentials = new CognitoCredentials(global.identityPoolId, _userPool);
     await credentials.getAwsCredentials(_session.getIdToken().getJwtToken());
     return credentials;
   }

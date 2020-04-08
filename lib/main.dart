@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'screens/interfaceScreen.dart';
 
-void main() => runApp(MyApp());
+void main() {
+
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
