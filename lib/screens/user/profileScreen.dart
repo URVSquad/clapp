@@ -13,7 +13,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
     // TODO: implement build
     return new Scaffold(
       //Here
+      body:
+        ListView.builder(
+          itemCount: 5,
+          itemBuilder: (BuildContext context, int index) {
 
+          }
+        ),
     );
   }
 }
