@@ -3,8 +3,7 @@ import 'dart:convert';
 import 'package:amazon_cognito_identity_dart_2/cognito.dart';
 import 'package:betogether/models/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-const _identityPoolId = 'eu-west-2:12a0d80f-f231-4c6d-9ce0-11025b35f7f9';
+import 'pools_vars.dart' as global;
 
 class UserService {
   CognitoUserPool _userPool;
@@ -49,7 +48,8 @@ class UserService {
     if (_cognitoUser == null || _session == null) {
       return null;
     }
-    credentials = new CognitoCredentials(_identityPoolId, _userPool);
+
+    credentials = new CognitoCredentials(global.identityPoolId, _userPool);
     await credentials.getAwsCredentials(_session.getIdToken().getJwtToken());
     return credentials;
   }
@@ -112,18 +112,19 @@ class UserService {
   }
 
   /// Sign up new user
-  Future<User> signUp(String email, String password, String name) async {
+  Future<User> signUp(String username, String password, String name, String email) async {
     CognitoUserPoolData data;
     final userAttributes = [
       new AttributeArg(name: 'name', value: name),
-      new AttributeArg(name: 'email', value: "roger.bosch.mateo@gmail.com"),
+      new AttributeArg(name: 'email', value: email),
     ];
     data =
-    await _userPool.signUp(email, password, userAttributes: userAttributes);
+    await _userPool.signUp(username, password, userAttributes: userAttributes);
 
     final user = new User();
-    user.email = email;
+    user.username = username;
     user.name = name;
+    user.email = email;
     user.confirmed = data.userConfirmed;
 
     return user;

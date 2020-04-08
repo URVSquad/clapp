@@ -4,6 +4,8 @@ class User {
   String email;
   String name;
   String password;
+  String username;
+  String repeatedPassword;
   String sub;
   bool confirmed = false;
   bool hasAccess = false;
