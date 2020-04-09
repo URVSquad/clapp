@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_point_tab_bar/pointTabIndicator.dart';
 
 class ListScreen extends StatefulWidget {
   ListScreen() : super();
@@ -25,11 +24,6 @@ class _ListScreenState extends State<ListScreen> with SingleTickerProviderStateM
     return Scaffold(
       appBar: TabBar(
         controller: _tabController,
-        indicator: PointTabIndicator(
-          position: PointTabIndicatorPosition.bottom,
-          color: Colors.white,
-          insets: EdgeInsets.only(bottom: 6),
-        ),
         tabs: tabList.map((item) {
           return Tab(text: item);
         }).toList(),
