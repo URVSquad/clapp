@@ -86,7 +86,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   new Container(
                     height: 85,
                     child: new ListTile(
-                      leading: const Icon(Icons.account_box),
+
+                      leading: new Container(
+                        padding: EdgeInsets.only(top:5),
+                        child: const Icon(Icons.account_box, size: 30, color: Colors.black, ),
+                      ),
+
                       title: new TextFormField(
                         decoration: new InputDecoration(labelText: 'Nombre'),
                         validator: validateName,
@@ -99,10 +104,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   new Container(
                     height: 85,
                     child: new ListTile(
-                      leading: const Icon(Icons.alternate_email),
+                      leading: new Container(
+                        padding: EdgeInsets.only(top:5),
+                        child: const Icon(Icons.alternate_email, size: 30, color: Colors.black, ),
+                      ),
+
                       title: new TextFormField(
-                        decoration: new InputDecoration(
-                          hintText: 'mi_nombre_de_usuario', labelText: 'Nombre de usuario'),
+                        decoration: new InputDecoration(labelText: 'Nombre de usuario'),
                         keyboardType: TextInputType.text,
                         validator: validateUsername,
                         onSaved: (String username) {
@@ -114,7 +122,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   new Container(
                     height: 85,
                     child: new ListTile(
-                      leading: const Icon(Icons.email),
+                      leading: new Container(
+                        padding: EdgeInsets.only(top:5),
+                        child: const Icon(Icons.email, size: 30, color: Colors.black, ),
+                      ),
+
                       title: new TextFormField(
                         decoration: new InputDecoration(
                             hintText: 'correo@correo.com', labelText: 'Correo electrónico'),
@@ -129,10 +141,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   new Container(
                     height: 85,
                     child: new ListTile(
-                      leading: const Icon(Icons.lock),
+                      leading: new Container(
+                        padding: EdgeInsets.only(top:5),
+                        child: const Icon(Icons.lock, size: 30, color: Colors.black, ),
+                      ),
+
                       title: new TextFormField(
                         decoration: new InputDecoration(
-                          hintText: 'Password!',
+                          labelText: 'Contraseña',
                         ),
                         obscureText: true,
                         controller: _pass,
@@ -146,10 +162,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   new Container(
                     height: 85,
                     child: new ListTile(
-                      leading: const Icon(Icons.lock),
+                      leading: new Container(
+                        padding: EdgeInsets.only(top:5),
+                        child: const Icon(Icons.lock, size: 30, color: Colors.black, ),
+                      ),
+
                       title: new TextFormField(
                         decoration: new InputDecoration(
-                          hintText: 'Password!',
+                          labelText: 'Repite la contraseña',
                         ),
                         validator: matchPassword,
                         obscureText: true,
@@ -165,7 +185,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     width: screenSize.width,
                     child: new RaisedButton(
                       child: new Text(
-                        'Sign Up',
+                        'Registrarme',
                       ),
                       onPressed: () {
                         submit(context);

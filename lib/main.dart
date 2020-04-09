@@ -39,7 +39,6 @@ class MyApp extends StatelessWidget {
               borderRadius: BorderRadius.circular(15.0),
             ),
           ),
-
           tabBarTheme: TabBarTheme(
             labelColor: Colors.black,
             unselectedLabelColor: primaryColorDark,
@@ -47,8 +46,11 @@ class MyApp extends StatelessWidget {
           iconTheme: IconThemeData(
             color: Colors.black
           ),
-          // Define the default TextTheme. Use this to specify the default
-          // text styling for headlines, titles, bodies of text, and more.
+          inputDecorationTheme: InputDecorationTheme(
+              labelStyle: TextStyle(
+                color: Colors.black,
+              ),
+          ),
           textTheme: TextTheme(
             headline: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
             title: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
