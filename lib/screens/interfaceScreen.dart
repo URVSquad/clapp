@@ -79,6 +79,7 @@ class _InterfacePageState extends State<InterfacePage> {
                 icon: new Icon(Icons.person),
               )
             ],
+
             labelColor: Colors.white,
             unselectedLabelColor: Colors.orangeAccent,
             indicatorSize: TabBarIndicatorSize.label,
