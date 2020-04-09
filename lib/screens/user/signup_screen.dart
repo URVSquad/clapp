@@ -227,7 +227,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     RegExp regex = new RegExp(pattern);
     print(regex.allMatches(username));
     if (!regex.hasMatch(username))
-      return 'Este no es un nombre de usuario correcto';
+      return 'El nombre de usuario solo puede contener letras y\nnúmeros';
     else
       return null;
   }

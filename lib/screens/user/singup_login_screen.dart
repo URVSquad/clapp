@@ -65,7 +65,7 @@ class _SignupLoginScreenState extends State<SignupLoginScreen> {
                         width: screenSize.width,
                         child: new RaisedButton(
                           child: new Text(
-                            'Acceder',
+                            'Iniciar sesión',
                           ),
                           onPressed: () {
                             Navigator.push(
@@ -84,8 +84,13 @@ class _SignupLoginScreenState extends State<SignupLoginScreen> {
 
           }
           return Scaffold(
+            backgroundColor: Colors.white,
             body: Center(
-              child: new CircularProgressIndicator(),
+              child: new CircularProgressIndicator(
+
+                backgroundColor: Colors.white,
+
+              ),
             ),
           );
         }

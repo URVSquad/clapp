@@ -1,5 +1,6 @@
 
 
+import 'package:betogether/main.dart';
 import 'package:betogether/models/user.dart';
 import 'package:betogether/screens/user/profileScreen.dart';
 
@@ -89,7 +90,7 @@ class _LoginScreenState extends State<LoginScreen> {
             final Size screenSize = MediaQuery.of(context).size;
             return new Scaffold(
               appBar: new AppBar(
-                title: new Text('Login'),
+                title: new Text('Iniciar sesión'),
               ),
               body: new Builder(
                 builder: (BuildContext context) {
@@ -126,7 +127,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                               title: new TextFormField(
                                 decoration:
-                                new InputDecoration(labelText: 'Password'),
+                                new InputDecoration(labelText: 'Contraseña'),
                                 obscureText: true,
                                 onSaved: (String password) {
                                   _user.password = password;
@@ -149,6 +150,19 @@ class _LoginScreenState extends State<LoginScreen> {
                               top: 10.0,
                             ),
                           ),
+                          new Center(
+                            child: new GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  new MaterialPageRoute(
+                                      builder: (context) =>
+                                      new ConfirmationScreen(email: _user.email)),
+                                );
+                              },
+                              child: new Text("Quiero verificar mi cuenta", style: new TextStyle(color: primaryColorDark, decoration: TextDecoration.underline),),
+                            ),
+                          )
                         ],
                       ),
                     ),

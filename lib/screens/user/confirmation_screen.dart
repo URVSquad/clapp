@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:amazon_cognito_identity_dart_2/cognito.dart';
 import 'package:betogether/services/pools_vars.dart' as global;
+import '../../main.dart';
 import 'login_screen.dart';
 
 class ConfirmationScreen extends StatefulWidget {
@@ -100,7 +101,7 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
     final Size screenSize = MediaQuery.of(context).size;
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text('Confirm Account'),
+        title: new Text('Verificar cuenta'),
       ),
       body: new Builder(
           builder: (BuildContext context) => new Container(
@@ -108,27 +109,38 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
               key: _formKey,
               child: new ListView(
                 children: <Widget>[
-                  new ListTile(
-                    leading: const Icon(Icons.email),
-                    title: new TextFormField(
-                      initialValue: widget.email,
-                      decoration: new InputDecoration(
-                          hintText: 'example@inspire.my',
-                          labelText: 'Email'),
-                      keyboardType: TextInputType.emailAddress,
-                      onSaved: (String email) {
-                        _user.email = email;
-                      },
+                  new Container(
+                    height: 85,
+                    child: new ListTile(
+                      leading: new Container(
+                        padding: EdgeInsets.only(top:5),
+                        child: const Icon(Icons.person, size: 30, color: Colors.black, ),
+                      ),
+                      title: new TextFormField(
+                        initialValue: widget.email,
+                        decoration: new InputDecoration(
+                            labelText: 'Correo electrónico o nombre de usuario'),
+                        keyboardType: TextInputType.emailAddress,
+                        onSaved: (String email) {
+                          _user.email = email;
+                        },
+                      ),
                     ),
                   ),
-                  new ListTile(
-                    leading: const Icon(Icons.lock),
-                    title: new TextFormField(
-                      decoration: new InputDecoration(
-                          labelText: 'Confirmation Code'),
-                      onSaved: (String code) {
-                        confirmationCode = code;
-                      },
+                  new Container(
+                    height: 85,
+                    child: new ListTile(
+                      leading: new Container(
+                        padding: EdgeInsets.only(top:5),
+                        child: const Icon(Icons.lock, size: 30, color: Colors.black, ),
+                      ),
+                      title: new TextFormField(
+                        decoration: new InputDecoration(
+                            labelText: 'Código de verificación'),
+                        onSaved: (String code) {
+                          confirmationCode = code;
+                        },
+                      ),
                     ),
                   ),
                   new Container(
@@ -136,29 +148,22 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
                     width: screenSize.width,
                     child: new RaisedButton(
                       child: new Text(
-                        'Submit',
-                        style: new TextStyle(color: Colors.white),
+                        'Verificar',
                       ),
                       onPressed: () {
                         _submit(context);
                       },
-                      color: Colors.blue,
                     ),
                     margin: new EdgeInsets.only(
                       top: 10.0,
                     ),
                   ),
                   new Center(
-                    child: new InkWell(
-                      child: new Text(
-                        'Resend Confirmation Code',
-                        style: new TextStyle(color: Colors.blueAccent),
-                      ),
-                      onTap: () {
-                        _resendConfirmation(context);
-                      },
+                    child: new GestureDetector(
+                      onTap: () { _resendConfirmation(context);},
+                      child: new Text("Reenviar código de verificación", style: new TextStyle(color: primaryColorDark, decoration: TextDecoration.underline),),
                     ),
-                  ),
+                  )
                 ],
               ),
             ),
