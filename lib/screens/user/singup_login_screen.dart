@@ -81,8 +81,10 @@ class _SignupLoginScreenState extends State<SignupLoginScreen> {
             }
 
           }
-          return Center(
-            child: new CircularProgressIndicator(),
+          return Scaffold(
+            body: Center(
+              child: new CircularProgressIndicator(),
+            ),
           );
         }
     );

@@ -99,19 +99,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
             return new Scaffold(
               appBar: new AppBar(
-                title: new Text('Secure Counter'),
+                title: new Text('Mi perfil'),
               ),
               body: new Center(
                 child: new Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     new Text(
-                      'Welcome ${_user.name}!',
+                      'Bienvenido ${_user.name}!',
                       style: Theme.of(context).textTheme.display1,
                     ),
                     new RaisedButton(
                       child: new Text(
-                        'Log out',
+                        'Cerrar sesión',
                         style: new TextStyle(color: Colors.white),
                       ),
                       onPressed: () => logout(context),
