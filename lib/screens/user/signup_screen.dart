@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:amazon_cognito_identity_dart_2/cognito.dart';
 import 'package:betogether/services/pools_vars.dart' as global;
+import '../../main.dart';
+import '../validators.dart' as validator;
 import 'confirmation_screen.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -74,14 +76,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
     final Size screenSize = MediaQuery.of(context).size;
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text('Sign Up'),
+        title: new Text('Crea tu cuenta'),
       ),
       body: new Builder(
         builder: (BuildContext context) {
           return new Container(
             child: new Form(
               key: _formKey,
-              child: new ListView(
+              child: new Column(
                 children: <Widget>[
                   new Container(
                     height: 85,
@@ -94,7 +96,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                       title: new TextFormField(
                         decoration: new InputDecoration(labelText: 'Nombre'),
-                        validator: validateName,
+                        validator: validator.validateName,
                         onSaved: (String name) {
                           _user.name = name;
                         },
@@ -112,7 +114,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       title: new TextFormField(
                         decoration: new InputDecoration(labelText: 'Nombre de usuario'),
                         keyboardType: TextInputType.text,
-                        validator: validateUsername,
+                        validator: validator.validateUsername,
                         onSaved: (String username) {
                           _user.username = username;
                         },
@@ -131,7 +133,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         decoration: new InputDecoration(
                             hintText: 'correo@correo.com', labelText: 'Correo electrónico'),
                         keyboardType: TextInputType.emailAddress,
-                        validator: validateEmail,
+                        validator: validator.validateEmail,
                         onSaved: (String email) {
                           _user.email = email;
                         },
@@ -152,7 +154,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                         obscureText: true,
                         controller: _pass,
-                        validator: validatePassword,
+                        validator: validator.validatePassword,
                         onSaved: (String password) {
                           _user.password = password;
                         },
@@ -204,43 +206,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-  String validateName(String text){
-    if(text.isEmpty){
-      return 'Tienes que introducir tu nombre';
-    }
-    return null;
-  }
-
-  String validateEmail(String email) {
-    Pattern pattern =
-        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-    RegExp regex = new RegExp(pattern);
-    print(regex.allMatches(email));
-    if (!regex.hasMatch(email))
-      return 'Parece que esto no es un correo electrónico';
-    else
-      return null;
-  }
-
-  String validateUsername(String username){
-    Pattern pattern = r'^([\w]+)$';
-    RegExp regex = new RegExp(pattern);
-    print(regex.allMatches(username));
-    if (!regex.hasMatch(username))
-      return 'Este no es un nombre de usuario correcto';
-    else
-      return null;
-  }
-
-  String validatePassword(String password){
-    if (password != null && password.length < 8){
-      return 'La contraseña debe tener almenos 8 carácteres';
-    }
-    return null;
-  }
-
   String matchPassword(String password){
-    String result = validatePassword(password);
+    String result = validator.validatePassword(password);
     if (result != null){
       return result;
     }

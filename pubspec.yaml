@@ -25,6 +25,8 @@ dependencies:
   cupertino_icons: ^0.1.2
   amazon_cognito_identity_dart_2: ^0.1.12+2
   shared_preferences: "^0.4.1"
+  flushbar: ^1.10.0
+  rounded_loading_button: ^1.0.0
 
 dev_dependencies:
   flutter_test:
