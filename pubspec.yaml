@@ -13,6 +13,7 @@ dependencies:
   shared_preferences: "^0.4.1"
   flushbar: ^1.10.0
   rounded_loading_button: ^1.0.0
+  http: "0.12.0+4"
 
 dev_dependencies:
   flutter_test:
