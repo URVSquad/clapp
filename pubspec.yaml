@@ -20,7 +20,7 @@ flutter_icons:
   android: true
   ios: true
   image_path: "assets/icon/icon.png"
-
+  flutter_form_builder:
 
 dev_dependencies:
   test:  "1.14.2"
