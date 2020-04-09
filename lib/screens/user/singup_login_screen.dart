@@ -1,4 +1,5 @@
 
+import 'package:betogether/main.dart';
 import 'package:betogether/screens/user/profileScreen.dart';
 import 'package:betogether/screens/user/signup_screen.dart';
 import 'package:betogether/services/cognito_service.dart';
@@ -38,12 +39,13 @@ class _SignupLoginScreenState extends State<SignupLoginScreen> {
                     children: <Widget>[
                       new Container(
                         padding:
-                        new EdgeInsets.only(left: 20.0, right: 20.0, bottom: 20.0),
+                        new EdgeInsets.only(left: 20.0, right: 20.0, bottom: 5.0),
                         width: screenSize.width,
                         child: new RaisedButton(
+                          color: primaryColorDark,
                           child: new Text(
-                            'Sign Up',
-                            style: new TextStyle(color: Colors.white),
+                            'Registrarme',
+
                           ),
                           onPressed: () {
                             Navigator.push(
@@ -52,8 +54,10 @@ class _SignupLoginScreenState extends State<SignupLoginScreen> {
                                   builder: (context) => new SignUpScreen()),
                             );
                           },
-                          color: Colors.blue,
                         ),
+                      ),
+                      new Center(
+                        child: new Text('o si ya tienes una cuenta'),
                       ),
                       new Container(
                         padding:
@@ -61,8 +65,7 @@ class _SignupLoginScreenState extends State<SignupLoginScreen> {
                         width: screenSize.width,
                         child: new RaisedButton(
                           child: new Text(
-                            'Login',
-                            style: new TextStyle(color: Colors.white),
+                            'Acceder',
                           ),
                           onPressed: () {
                             Navigator.push(
@@ -71,7 +74,6 @@ class _SignupLoginScreenState extends State<SignupLoginScreen> {
                                   builder: (context) => new LoginScreen()),
                             );
                           },
-                          color: Colors.blue,
                         ),
                       ),
                     ],

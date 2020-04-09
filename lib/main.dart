@@ -6,12 +6,26 @@ void main() {
   runApp(MyApp());
 }
 
+const primaryColor = Color(0xffc5e1a5);
+const primaryColorLight = Color(0xfff8ffd7);
+const primaryColorDark = Color(0xff94af76);
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
         title: 'BeTogether',
         theme: ThemeData(
+          // Define the default brightness and colors.
+          brightness: Brightness.light,
+          primaryColor: primaryColor,
+          primaryColorLight: primaryColorLight,
+          primaryColorDark: primaryColorDark,
+          accentColor: primaryColorDark,
+          scaffoldBackgroundColor: Colors.white,
+          // Define the default font family.
+          fontFamily: 'Cupertino',
+
           appBarTheme: AppBarTheme(
             elevation: 0,
             textTheme: TextTheme(
@@ -19,29 +33,20 @@ class MyApp extends StatelessWidget {
 
             ),
           ),
-
           buttonTheme: ButtonThemeData(
-            buttonColor: Colors.blueAccent,
+            buttonColor: primaryColor,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(15.0),
             ),
-            textTheme: ButtonTextTheme.accent,
           ),
 
           tabBarTheme: TabBarTheme(
             labelColor: Colors.black,
-            unselectedLabelColor: Colors.grey,
-            indicatorSize: TabBarIndicatorSize.label,
+            unselectedLabelColor: primaryColorDark,
           ),
-          // Define the default brightness and colors.
-          brightness: Brightness.light,
-          primaryColor: Colors.white,
-          accentColor: Colors.lightGreen,
-          scaffoldBackgroundColor: Colors.white,
-
-          // Define the default font family.
-          fontFamily: 'Cupertino',
-
+          iconTheme: IconThemeData(
+            color: Colors.black
+          ),
           // Define the default TextTheme. Use this to specify the default
           // text styling for headlines, titles, bodies of text, and more.
           textTheme: TextTheme(

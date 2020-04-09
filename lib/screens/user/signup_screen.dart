@@ -166,12 +166,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     child: new RaisedButton(
                       child: new Text(
                         'Sign Up',
-                        style: new TextStyle(color: Colors.white),
                       ),
                       onPressed: () {
                         submit(context);
                       },
-                      color: Colors.blue,
                     ),
                     margin: new EdgeInsets.only(
                       top: 10.0,
