@@ -4,6 +4,7 @@ import 'package:amazon_cognito_identity_dart_2/sig_v4.dart';
 import 'package:betogether/main.dart';
 import 'package:betogether/models/user.dart';
 import 'package:amazon_cognito_identity_dart_2/src/cognito_client_exceptions.dart';
+import 'package:betogether/screens/modals/flushbar_modal.dart';
 import 'package:betogether/screens/user/signup_screen.dart';
 import 'package:betogether/screens/user/singup_login_screen.dart';
 import 'package:betogether/services/cognito_service.dart';
@@ -13,6 +14,7 @@ import 'package:flushbar/flushbar_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
+import '../interfaceScreen.dart';
 import 'login_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -82,20 +84,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     //Scaffold.of(context).showSnackBar(snackBar);
     if (signOutSuccess) {
-      Flushbar flushbar = Flushbar(
-        flushbarPosition: FlushbarPosition.TOP,
-        flushbarStyle: FlushbarStyle.GROUNDED,
-        message: message,
-        icon: Icon(
-          Icons.info_outline,
-          size: 28.0,
-          color: Colors.black,
-        ),
-        backgroundColor: primaryColorDark,
-        duration: Duration(seconds: 5),
-
+      Flushbar flushbar = Modal().flushbar(message);
+      Navigator.pushReplacement(
+        context,
+        new MaterialPageRoute(
+            builder: (context) =>
+            new InterfacePage(flushbar:flushbar,)),
       );
-      Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen(flushbar: flushbar,)));
 
     }
   }
@@ -119,9 +114,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     new Text(
-                      'Bienvenido ${_user.name}!',
-                      style: Theme.of(context).textTheme.display1,
-                    ),
+                      'Bienvenido ${_user.name}!'),
                     new RaisedButton(
                       child: new Text(
                         'Cerrar sesión',

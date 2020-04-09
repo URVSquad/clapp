@@ -10,6 +10,9 @@ const primaryColor = Color(0xffc5e1a5);
 const primaryColorLight = Color(0xfff8ffd7);
 const primaryColorDark = Color(0xff94af76);
 
+const title = TextStyle(fontSize: 35, fontWeight: FontWeight.bold);
+const subtitle = TextStyle(fontSize: 25);
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -50,11 +53,6 @@ class MyApp extends StatelessWidget {
               labelStyle: TextStyle(
                 color: Colors.black,
               ),
-          ),
-          textTheme: TextTheme(
-            headline: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
-            title: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
-            body1: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
           ),
         ),
         home: InterfacePage(title: 'BeTogether',)
