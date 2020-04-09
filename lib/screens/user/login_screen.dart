@@ -136,12 +136,12 @@ class _LoginScreenState extends State<LoginScreen> {
             child: new Column(
               children: <Widget>[
                 new Container(
-                  margin: EdgeInsets.only(bottom: 20, left: 20, right: 20, top: 30),
+                  margin: EdgeInsets.only(bottom: 20, left: 0, right: 20, top: 30),
                   child: new Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
 
-                      new Text('¡Es lo más tenerte en Clapp!', style: title),
+                      new Text('¡Es lo más tenerte\nen Clapp!', style: title),
                       new Text('¿Ready para petarlo? 🚀', style: subtitle,)
                     ],
                   ),
