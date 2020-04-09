@@ -6,6 +6,7 @@ import 'package:betogether/screens/user/singup_login_screen.dart';
 import 'package:betogether/services/cognito_service.dart';
 import 'package:amazon_cognito_identity_dart_2/src/cognito_user_pool.dart';
 import 'package:flutter/material.dart';
+import '../main.dart';
 import 'addScreen.dart';
 import 'homeScreen.dart';
 import 'listScreen.dart';
@@ -65,13 +66,8 @@ class _InterfacePageState extends State<InterfacePage> {
                 icon: new Icon(Icons.person),
               )
             ],
-            labelColor: Colors.white,
-            unselectedLabelColor: Colors.orangeAccent,
-            indicatorSize: TabBarIndicatorSize.label,
-            indicatorPadding: EdgeInsets.all(5.0),
-            indicatorColor: Colors.red,
           ),
-          backgroundColor: Colors.blueGrey,
+          backgroundColor: primaryColor,
         ),
       ),
     );
