@@ -187,6 +187,7 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
                   ),
                   new Center(
                     child: new GestureDetector(
+                      margin: EdgeInsets.only(top: 20),
                       onTap: () { _resendConfirmation(context);},
                       child: new Text("Reenviar código de verificación", style: new TextStyle(color: primaryColorDark, decoration: TextDecoration.underline),),
                     ),
