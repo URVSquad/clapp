@@ -98,28 +98,40 @@ class _LoginScreenState extends State<LoginScreen> {
                       key: _formKey,
                       child: new ListView(
                         children: <Widget>[
-                          new ListTile(
-                            leading: const Icon(Icons.email),
-                            title: new TextFormField(
-                              initialValue: widget.email,
-                              decoration: new InputDecoration(
-                                  hintText: 'example@inspire.my',
-                                  labelText: 'Email'),
-                              keyboardType: TextInputType.emailAddress,
-                              onSaved: (String email) {
-                                _user.email = email;
-                              },
+                          new Container(
+                            height: 85,
+                            child: new ListTile(
+
+                              leading: new Container(
+                                padding: EdgeInsets.only(top:5),
+                                child: const Icon(Icons.person, size: 30, color: Colors.black, ),
+                              ),
+                              title: new TextFormField(
+                                initialValue: widget.email,
+                                decoration: new InputDecoration(
+                                    labelText: 'Correo electrónico o nombre de usuario'),
+                                keyboardType: TextInputType.emailAddress,
+                                onSaved: (String email) {
+                                  _user.email = email;
+                                },
+                              ),
                             ),
                           ),
-                          new ListTile(
-                            leading: const Icon(Icons.lock),
-                            title: new TextFormField(
-                              decoration:
-                              new InputDecoration(labelText: 'Password'),
-                              obscureText: true,
-                              onSaved: (String password) {
-                                _user.password = password;
-                              },
+                          new Container(
+                            height: 85,
+                            child: new ListTile(
+                              leading: new Container(
+                                padding: EdgeInsets.only(top:5),
+                                child: const Icon(Icons.lock, size: 30, color: Colors.black, ),
+                              ),
+                              title: new TextFormField(
+                                decoration:
+                                new InputDecoration(labelText: 'Password'),
+                                obscureText: true,
+                                onSaved: (String password) {
+                                  _user.password = password;
+                                },
+                              ),
                             ),
                           ),
                           new Container(
@@ -127,13 +139,11 @@ class _LoginScreenState extends State<LoginScreen> {
                             width: screenSize.width,
                             child: new RaisedButton(
                               child: new Text(
-                                'Login',
-                                style: new TextStyle(color: Colors.white),
+                                'Acceder',
                               ),
                               onPressed: () {
                                 submit(context);
                               },
-                              color: Colors.blue,
                             ),
                             margin: new EdgeInsets.only(
                               top: 10.0,
