@@ -5,6 +5,7 @@ import 'package:betogether/models/user.dart';
 import 'package:betogether/screens/user/profileScreen.dart';
 
 import 'package:betogether/services/cognito_service.dart';
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:amazon_cognito_identity_dart_2/cognito.dart';
@@ -12,9 +13,10 @@ import 'package:betogether/services/pools_vars.dart' as global;
 import 'confirmation_screen.dart';
 
 class LoginScreen extends StatefulWidget {
-  LoginScreen({Key key, this.email}) : super(key: key);
+  LoginScreen({Key key, this.email, this.flushbar}) : super(key: key);
 
   final String email;
+  Flushbar flushbar;
 
   @override
   _LoginScreenState createState() => new _LoginScreenState();
@@ -30,6 +32,15 @@ class _LoginScreenState extends State<LoginScreen> {
     await _userService.init();
     _isAuthenticated = await _userService.checkAuthenticated();
     return _userService;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    if(widget.flushbar != null){
+      WidgetsBinding.instance.addPostFrameCallback((_) => {widget.flushbar.show(context)});
+    }
   }
 
   submit(BuildContext context) async {

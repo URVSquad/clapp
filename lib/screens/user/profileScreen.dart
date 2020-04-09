@@ -1,12 +1,15 @@
 import 'dart:developer';
 
 import 'package:amazon_cognito_identity_dart_2/sig_v4.dart';
+import 'package:betogether/main.dart';
 import 'package:betogether/models/user.dart';
 import 'package:amazon_cognito_identity_dart_2/src/cognito_client_exceptions.dart';
 import 'package:betogether/screens/user/signup_screen.dart';
 import 'package:betogether/screens/user/singup_login_screen.dart';
 import 'package:betogether/services/cognito_service.dart';
 import 'package:betogether/services/pools_vars.dart' as global;
+import 'package:flushbar/flushbar.dart';
+import 'package:flushbar/flushbar_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -53,7 +56,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     try {
       print("LOGOUT BY PRESSING BUTTON");
       await _userService.signOut();
-      message = 'User sucessfully logged out!';
+      message = 'Se ha cerrado la sesión del usuario';
       signOutSuccess = true;
     } on CognitoClientException catch (e) {
       if (e.code == 'InvalidParameterException' ||
@@ -72,19 +75,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
       action: new SnackBarAction(
         label: 'OK',
         onPressed: () async {
-          if (signOutSuccess) {
-              Navigator.push(
-                context,
-                new MaterialPageRoute(
-                    builder: (context) => new LoginScreen()),
-              );
-          }
         },
       ),
-      duration: new Duration(seconds: 30),
+      duration: new Duration(seconds: 5),
     );
 
-    Scaffold.of(context).showSnackBar(snackBar);
+    //Scaffold.of(context).showSnackBar(snackBar);
+    if (signOutSuccess) {
+      Flushbar flushbar = Flushbar(
+        flushbarPosition: FlushbarPosition.TOP,
+        flushbarStyle: FlushbarStyle.GROUNDED,
+        message: message,
+        icon: Icon(
+          Icons.info_outline,
+          size: 28.0,
+          color: Colors.black,
+        ),
+        backgroundColor: primaryColorDark,
+        duration: Duration(seconds: 5),
+
+      );
+      Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen(flushbar: flushbar,)));
+
+    }
   }
 
   @override
@@ -112,10 +125,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     new RaisedButton(
                       child: new Text(
                         'Cerrar sesión',
-                        style: new TextStyle(color: Colors.white),
                       ),
                       onPressed: () => logout(context),
-                      color: Colors.blue,
                     ),
                   ],
                 ),
