@@ -138,6 +138,10 @@ class UserService {
       return _cognitoUser.signOut();
     }
   }
+
+  Future<String> getIdToken() async{
+    return _session.getIdToken().getJwtToken();
+  }
 }
 
 class Storage extends CognitoStorage {
@@ -175,4 +179,5 @@ class Storage extends CognitoStorage {
   Future<void> clear() async {
     _prefs.clear();
   }
+
 }
