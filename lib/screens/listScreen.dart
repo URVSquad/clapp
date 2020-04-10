@@ -1,3 +1,4 @@
+import 'package:betogether/models/listActivities.dart';
 import 'package:betogether/screens/listActivitiesScreen.dart';
 import 'package:betogether/services/api_service.dart';
 import 'package:flutter/cupertino.dart';
@@ -55,11 +56,14 @@ class _ListScreenState extends State<ListScreen>
     return GestureDetector(
         onTap: () {
           APIService api = new APIService();
-          api.getActivities();
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => ListActivitiesScreen()),
-          );
+          Future<ListActivities> futureList = api.getActivities();
+          futureList.then((list) async {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ListActivitiesScreen(list)),
+            );
+          });
+
         },
         child: Container(
           child: Center(

@@ -6,8 +6,9 @@ class ListActivities{
   ListActivities({this.list});
 
   factory ListActivities.fromJson(Map<String, dynamic> parsedJson){
-    var list = parsedJson['rows'] as List;
+    var list = parsedJson['activities'] as List;
     list = list.map((i) => Activity.fromJson(i)).toList();
+    print(list);
     return ListActivities(
         list: list
     );
