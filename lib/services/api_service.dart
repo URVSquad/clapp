@@ -1,5 +1,7 @@
+import 'dart:convert';
 import 'package:betogether/models/activity.dart';
 import 'package:betogether/models/event.dart';
+import 'package:betogether/models/listActivities.dart';
 import 'package:betogether/services/cognito_service.dart';
 import 'package:betogether/services/pools_vars.dart' as global;
 import 'package:http/http.dart' as http;
@@ -11,10 +13,12 @@ const rootUrl = "https://edrxliv83i.execute-api.eu-west-2.amazonaws.com/dev";
 class APIService {
   UserService _userService = new UserService(global.userPool);
 
-  Future<String> getActivities() async {
+  Future<ListActivities> getActivities() async {
     var url = rootUrl + "/activities";
     var response = await http.get(url);
-    return response.body;
+    print(response.body);
+    ListActivities list = ListActivities.fromJson(jsonDecode(response.body));
+    return list;
   }
 
   Future<String> postActivity(Activity activity) async {
