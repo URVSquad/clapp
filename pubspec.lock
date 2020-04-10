@@ -85,6 +85,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.4"
+<<<<<<< HEAD
   csslib:
     dependency: transitive
     description:
@@ -92,6 +93,8 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.16.1"
+=======
+>>>>>>> imagen y fecha a medias
   cupertino_icons:
     dependency: "direct main"
     description:
@@ -99,6 +102,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.3"
+<<<<<<< HEAD
 <<<<<<< HEAD
   flushbar:
     dependency: "direct main"
@@ -123,11 +127,14 @@ packages:
     source: hosted
     version: "1.0.0"
 >>>>>>> Botones y cambio de vista
+=======
+>>>>>>> imagen y fecha a medias
   flutter:
     dependency: "direct main"
     description: flutter
     source: sdk
     version: "0.0.0"
+<<<<<<< HEAD
 <<<<<<< HEAD
   flutter_launcher_icons:
     dependency: "direct main"
@@ -145,11 +152,15 @@ packages:
     source: hosted
     version: "1.7.0"
   flutter_colorpicker:
+=======
+  flutter_plugin_android_lifecycle:
+>>>>>>> imagen y fecha a medias
     dependency: transitive
     description:
-      name: flutter_colorpicker
+      name: flutter_plugin_android_lifecycle
       url: "https://pub.dartlang.org"
     source: hosted
+<<<<<<< HEAD
     version: "0.3.2"
   flutter_form_builder:
     dependency: "direct main"
@@ -166,11 +177,15 @@ packages:
     source: hosted
     version: "0.7.0"
 >>>>>>> Botones y cambio de vista
+=======
+    version: "1.0.6"
+>>>>>>> imagen y fecha a medias
   flutter_test:
     dependency: "direct dev"
     description: flutter
     source: sdk
     version: "0.0.0"
+<<<<<<< HEAD
 <<<<<<< HEAD
   glob:
     dependency: transitive
@@ -195,6 +210,8 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.8.0"
+=======
+>>>>>>> imagen y fecha a medias
   http:
 >>>>>>> Botones y cambio de vista
     dependency: transitive
@@ -231,6 +248,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
 <<<<<<< HEAD
+<<<<<<< HEAD
     version: "2.1.12"
   io:
     dependency: transitive
@@ -257,12 +275,21 @@ packages:
     version: "2.1.4"
   intl:
     dependency: transitive
+=======
+    version: "2.1.12"
+  image_picker:
+    dependency: "direct main"
+>>>>>>> imagen y fecha a medias
     description:
-      name: intl
+      name: image_picker
       url: "https://pub.dartlang.org"
     source: hosted
+<<<<<<< HEAD
     version: "0.16.1"
 >>>>>>> Botones y cambio de vista
+=======
+    version: "0.6.4"
+>>>>>>> imagen y fecha a medias
   matcher:
     dependency: transitive
     description:
@@ -361,6 +388,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.3"
+<<<<<<< HEAD
   rounded_loading_button:
     dependency: "direct main"
     description:
@@ -368,6 +396,8 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.4"
+=======
+>>>>>>> imagen y fecha a medias
   shared_preferences:
     dependency: "direct main"
     description:
@@ -450,13 +480,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.5"
-  sy_flutter_widgets:
-    dependency: transitive
-    description:
-      name: sy_flutter_widgets
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.4"
   term_glyph:
     dependency: transitive
     description:
@@ -478,6 +501,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.15"
+<<<<<<< HEAD
   test_core:
     dependency: transitive
     description:
@@ -485,6 +509,8 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.3.3"
+=======
+>>>>>>> imagen y fecha a medias
   typed_data:
     dependency: transitive
     description:
@@ -492,13 +518,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.6"
-  validators:
-    dependency: transitive
-    description:
-      name: validators
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.0+1"
   vector_math:
     dependency: transitive
     description:
@@ -541,6 +560,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.6.1"
+<<<<<<< HEAD
   yaml:
     dependency: transitive
     description:
@@ -548,11 +568,17 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.2.0"
+=======
+>>>>>>> imagen y fecha a medias
 sdks:
 <<<<<<< HEAD
   dart: ">=2.7.0 <3.0.0"
   flutter: ">=1.5.0 <2.0.0"
 =======
   dart: ">=2.6.0 <3.0.0"
+<<<<<<< HEAD
   flutter: ">=1.5.4 <2.0.0"
 >>>>>>> Botones y cambio de vista
+=======
+  flutter: ">=1.12.13 <2.0.0"
+>>>>>>> imagen y fecha a medias
