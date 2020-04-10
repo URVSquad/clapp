@@ -28,4 +28,16 @@ class Event {
         duration: parsedJson['date']
     );
   }
+
+  Map<String, dynamic> toJson() =>
+      {
+        'id': id,
+        'title': title,
+        'url': url,
+        'image': image,
+        'description': description,
+        'date': date,
+        'event_start': start,
+        'event_end': start
+      };
 }
