@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import '../main.dart';
 import 'add/addScreen.dart';
 import 'homeScreen.dart';
-import 'listScreen.dart';
+
 
 
 class InterfacePage extends StatefulWidget {
@@ -42,13 +42,12 @@ class _InterfacePageState extends State<InterfacePage> {
   Widget build(BuildContext context) {
     return new Scaffold(
       body: DefaultTabController(
-        length: 4,
+        length: 3,
         child: new Scaffold(
           body: TabBarView(
             physics: NeverScrollableScrollPhysics(),
             children: [
               new HomeScreen(),
-              new ListScreen(),
               new AddScreen(),
               new SignupLoginScreen()
             ],
@@ -57,9 +56,6 @@ class _InterfacePageState extends State<InterfacePage> {
             tabs: [
               Tab(
                 icon: new Icon(Icons.home),
-              ),
-              Tab(
-                icon: new Icon(Icons.list),
               ),
               Tab(
                 icon: new Icon(Icons.add),
@@ -76,7 +72,7 @@ class _InterfacePageState extends State<InterfacePage> {
   }
 
 
-  Widget open_profile_screen(BuildContext context){
+  Widget openProfileScreen(BuildContext context){
     return new FutureBuilder(
       future: _getValues(),
       builder: (context, AsyncSnapshot<UserService> snapshot) {

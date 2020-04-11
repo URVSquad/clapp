@@ -23,6 +23,7 @@ dependencies:
   rounded_loading_button: ^1.0.0
   http: "0.12.0+4"
   flutter_launcher_icons: "^0.7.3"
+  modal_progress_hud: ^0.1.3
 
 flutter_icons:
   android: true
