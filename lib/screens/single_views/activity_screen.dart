@@ -4,16 +4,15 @@ import 'package:betogether/services/api_service.dart';
 import 'package:flutter/material.dart';
 
 
-class HomeScreen extends StatefulWidget {
-  HomeScreen({Key key, this.activity}) : super(key: key);
-
-  Activity activity;
+class ActivityScreen extends StatefulWidget {
+  final Activity activity;
+  ActivityScreen({Key key, this.activity}) : super(key: key);
 
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  _ActivityScreenState createState() => _ActivityScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _ActivityScreenState extends State<ActivityScreen> {
 
   @override
   Widget build(BuildContext context) {

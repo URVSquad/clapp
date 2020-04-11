@@ -1,5 +1,6 @@
 import 'package:betogether/models/activity.dart';
 import 'package:betogether/models/listActivities.dart';
+import 'package:betogether/screens/single_views/activity_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -94,10 +95,13 @@ class _ListActivitiesScreenState extends State<ListActivitiesScreen> {
               itemBuilder: (BuildContext context, int index) {
                 //vars
                 Activity activity = list.getActivity(index);
-
                 return GestureDetector(
                   onTap: () {
                     print("Activty clicked");
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ActivityScreen(activity: activity,)),
+                    );
                   },
                   child: new Stack(
                     children: <Widget>[card, image, cardContent(activity)],
