@@ -52,7 +52,7 @@ class _ListScreenState extends State<ListScreen>
         ));
   }
 
-  GestureDetector category(String title, String asset) {
+  GestureDetector category(String title, String color, String claim) {
     return GestureDetector(
         onTap: () {
           APIService api = new APIService();
@@ -60,7 +60,7 @@ class _ListScreenState extends State<ListScreen>
           futureList.then((list) async {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => ListActivitiesScreen(list)),
+              MaterialPageRoute(builder: (context) => ListActivitiesScreen(list, title, claim, color)),
             );
           });
 
@@ -70,22 +70,18 @@ class _ListScreenState extends State<ListScreen>
             child: Text(
               title,
               style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                  fontSize: 30),
+                  fontSize: 25),
             ),
           ),
           decoration: BoxDecoration(
+            border: Border.all(color: Colors.black12),
             shape: BoxShape.rectangle,
             borderRadius: new BorderRadius.only(
                 topLeft: const Radius.circular(radius),
                 topRight: const Radius.circular(radius),
                 bottomLeft: const Radius.circular(radius),
                 bottomRight: const Radius.circular(radius)),
-            image: DecorationImage(
-              image: AssetImage(asset),
-              fit: BoxFit.cover,
-            ),
+            color: Color(int.parse(color)),
           ),
         ));
   }
@@ -118,14 +114,14 @@ class _ListScreenState extends State<ListScreen>
       crossAxisCount: 2,
       childAspectRatio: 1.2,
       children: <Widget>[
-        category("Podcast", "assets/img/deportes.jpg"),
-        category("Ejercicio", "assets/img/deportes.jpg"),
-        category("Recetas", "assets/img/deportes.jpg"),
-        category("Audiovisual", "assets/img/deportes.jpg"),
-        category("Libros", "assets/img/deportes.jpg"),
-        category("Gaming", "assets/img/deportes.jpg"),
-        category("Juegos", "assets/img/deportes.jpg"),
-        category("Peques", "assets/img/deportes.jpg"),
+        category("Podcast", "0xffffecb3","Bla Bla Bla 💬"),
+        category("Ejercicio", "0xffb2dfdb","Mente sana en body sudado 💦"),
+        category("Recetas", "0xffe1bee7","El equilibro está en recetas saludables y un cocktail para celebrar lo que te cuidas. 🍹"),
+        category("Audiovisual", "0xffffccbc","Junto a la ducha, el mejor momento del día. Disfrutalo, te lo mereces. 🎬"),
+        category("Libros", "0xffb2ebf2"," Libro’s club 📚💭"),
+        category("Gaming", "0xfff0f4c3","🎮 Ready player one 🎮"),
+        category("Juegos", "0xfff3e5f5","💡 ¡es la hora de jugar! cuidado con los tramposos 👾"),
+        category("Peques", "0xffffcdd2","Entretener a los peques es un súper poder 🐣"),
       ],
     );
   }
