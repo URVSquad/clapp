@@ -28,7 +28,7 @@ class _NewItemScreenState extends State<NewItemScreen> {
   File _imageFile;
   final _formKey = GlobalKey<FormState>();
 
-  Item _newItem;
+  var _newItem;
 
   Widget showImage(){
     if(_imageFile==null){
@@ -117,7 +117,7 @@ class _NewItemScreenState extends State<NewItemScreen> {
                   setState(() {
                     _durationButtonText = Text(
                     resultingDuration.inHours.toString()+'h '+((resultingDuration.inMinutes)%60).toString()+'min');
-                    _newItem.duration = 'a';
+                    _newItem.duration = resultingDuration.inMinutes;
                   });
                 },
               ),
@@ -257,7 +257,7 @@ class _NewItemScreenState extends State<NewItemScreen> {
                   child: Text('Enviar'),
 
                   onPressed: () {
-                    _newItem.date = DateTime.now().toString(); //automatico?
+                    
                   },
                  ),
                 )
