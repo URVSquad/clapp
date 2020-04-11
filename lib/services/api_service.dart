@@ -21,6 +21,7 @@ class APIService {
     return list;
   }
 
+
   Future<String> postActivity(Activity activity) async {
     var url = rootUrl + "/activities";
     var payload = activity.toJson();
