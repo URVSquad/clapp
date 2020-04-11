@@ -1,9 +1,12 @@
 import 'package:betogether/models/user.dart';
+import 'package:betogether/screens/modals/flushbar_modal.dart';
 import 'package:betogether/services/cognito_service.dart';
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:amazon_cognito_identity_dart_2/cognito.dart';
 import 'package:betogether/services/pools_vars.dart' as global;
+import 'package:rounded_loading_button/rounded_loading_button.dart';
 import '../../main.dart';
 import '../validators.dart' as validator;
 import 'confirmation_screen.dart';
@@ -20,10 +23,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
   User _user = new User();
   final _userService = new UserService(global.userPool);
   final TextEditingController _pass = TextEditingController();
+  RoundedLoadingButtonController _btnController = new RoundedLoadingButtonController();
 
 
   void submit(BuildContext context) async {
+    print('HERE');
     if (_formKey.currentState.validate()){
+      print('Validated');
       _formKey.currentState.save();
 
       String message;
@@ -31,42 +37,47 @@ class _SignUpScreenState extends State<SignUpScreen> {
       try {
         _user = await _userService.signUp(_user.username, _user.password, _user.name, _user.email);
         signUpSuccess = true;
-        message = 'User sign up successful!';
+        message = 'Cuenta creada correctamente. Verifica tu cuenta para empezar a usarla.';
       } on CognitoClientException catch (e) {
         print(e);
         if (e.code == 'UsernameExistsException' ||
             e.code == 'InvalidParameterException' ||
             e.code == 'ResourceNotFoundException') {
-          message = e.message;
+          message = 'Este nombre de usuario ya existe';
         } else {
-          message = 'Unknown client error occurred';
+          message = 'Error desconocido, disculpa las molestias';
         }
       } catch (e) {
-        message = 'Unknown error occurred';
+        message = 'Error desconocido, disculpa las molestias';
       }
-
-      final snackBar = new SnackBar(
-        content: new Text(message),
-        action: new SnackBarAction(
-          label: 'OK',
-          onPressed: () {
-            if (signUpSuccess) {
-              Navigator.pop(context);
-              if (!_user.confirmed) {
-                Navigator.push(
-                  context,
-                  new MaterialPageRoute(
-                      builder: (context) =>
-                      new ConfirmationScreen()),
-                );
-              }
-            }
-          },
-        ),
-        duration: new Duration(seconds: 30),
-      );
-
-      Scaffold.of(context).showSnackBar(snackBar);
+      if (signUpSuccess) {
+        Flushbar flusbar = Modal().flushbar(message);
+        Future.delayed(const Duration(milliseconds: 500), () {
+          _btnController.reset();
+          Navigator.push(
+            context,
+            new MaterialPageRoute(
+                builder: (context) =>
+                new ConfirmationScreen(email: _user.email, flushbar:flusbar)),
+          );
+        });
+      }
+      else{
+        Flushbar flusbar = Modal().flushbar(message, type: 'error');
+        _btnController.error();
+        Future.delayed(const Duration(milliseconds: 500), () {
+          _btnController.reset();
+          flusbar.show(context);
+        });
+      }
+    }
+    else{
+      Flushbar flusbar = Modal().flushbar('Alguno de los campos es incorrecto', type: 'error');
+      _btnController.error();
+      Future.delayed(const Duration(milliseconds: 500), () {
+        _btnController.reset();
+        flusbar.show(context);
+      });
     }
 
   }
@@ -83,7 +94,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           return new Container(
             child: new Form(
               key: _formKey,
-              child: new Column(
+              child: new ListView(
                 children: <Widget>[
                   new Container(
                     height: 85,
@@ -183,18 +194,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
 
                   new Container(
-                    padding: new EdgeInsets.all(20.0),
-                    width: screenSize.width,
-                    child: new RaisedButton(
-                      child: new Text(
-                        'Registrarme',
-                      ),
+                    margin: EdgeInsets.only(top: 10),
+                    child: new RoundedLoadingButton(
+                      height: 40,
+                      color: primaryColor,
+                      child: Text('Registrare'),
+                      controller: _btnController,
                       onPressed: () {
                         submit(context);
                       },
-                    ),
-                    margin: new EdgeInsets.only(
-                      top: 10.0,
                     ),
                   ),
                 ],

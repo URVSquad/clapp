@@ -1,5 +1,6 @@
 
 import 'package:betogether/models/user.dart';
+import 'package:betogether/screens/modals/flushbar_modal.dart';
 import 'package:betogether/services/cognito_service.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
@@ -59,55 +60,84 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
     }
     return message;
   }
+
   _submit(BuildContext context) async {
-
     if (_formKey.currentState.validate()){
-      String message = await _send_request();
-      if (accountConfirmed) {
-        Navigator.pop(context);
-        Navigator.push(
-          context,
-          new MaterialPageRoute(
-              builder: (context) => new LoginScreen(email: _user.email)),
-        );
-      }
-    }
 
+      String message = await _send_request();
+      Flushbar flusbar = Modal().flushbar(message);
+
+      if (accountConfirmed) {
+        _btnController.success();
+        Future.delayed(const Duration(milliseconds: 500), () {
+          _btnController.reset();
+          Navigator.push(
+            context,
+            new MaterialPageRoute(
+                builder: (context) =>
+                new LoginScreen(email: _user.email, flushbar:flusbar)),
+          );
+        });
+      }
+      else{
+        _btnController.error();
+        Future.delayed(const Duration(milliseconds: 500), () {
+          _btnController.reset();
+          flusbar.show(context);
+        });
+    }
+    }
+    else{
+      Flushbar flusbar = Modal().flushbar('Alguno de los campos introducidos presenta algun error.', type: 'error');
+      _btnController.error();
+      Future.delayed(const Duration(milliseconds: 500), () {
+        _btnController.reset();
+        flusbar.show(context);
+      });
+    }
   }
 
   _resendConfirmation(BuildContext context) async {
     _formKey.currentState.save();
-    String message;
-    try {
-      await _userService.resendConfirmationCode(_user.email);
-      message = 'Confirmation code sent to ${_user.email}!';
-    } on CognitoClientException catch (e) {
-      if (e.code == 'LimitExceededException' ||
-          e.code == 'InvalidParameterException' ||
-          e.code == 'ResourceNotFoundException') {
-        message = e.message;
-      } else {
-        message = 'Unknown client error occurred';
+    bool code_sent = false;
+    if(_user.email != ''){
+      String message;
+      try {
+        await _userService.resendConfirmationCode(_user.email);
+        message = 'Código de verificación enviado a ${_user.email}!';
+        code_sent = true;
+      } on CognitoClientException catch (e) {
+        if (e.code == 'LimitExceededException' ||
+            e.code == 'InvalidParameterException' ||
+            e.code == 'ResourceNotFoundException') {
+          message = 'Máximo número de verificaciones enviados.';
+        } else {
+          message = 'Error desconocido, disculpa las molestias';
+        }
+      } catch (e) {
+        message = 'Error desconocido, disculpa las molestias';
       }
-    } catch (e) {
-      message = 'Unknown error occurred';
+
+      if(code_sent){
+           Flushbar flushbar = Modal().flushbar(message);
+           flushbar.show(context);
+      }
+      else{
+        Flushbar flushbar = Modal().flushbar(message);
+        flushbar.show(context);
+      }
+
+    }
+    else{
+      Modal().flushbar('Debes introducir un usuario o correo electrónico', type: 'error').show(context);
+      Future.delayed(const Duration(milliseconds: 500), () {
+      });
     }
 
-    final snackBar = new SnackBar(
-      content: new Text(message),
-      action: new SnackBarAction(
-        label: 'OK',
-        onPressed: () {},
-      ),
-      duration: new Duration(seconds: 30),
-    );
-
-    Scaffold.of(context).showSnackBar(snackBar);
   }
 
   @override
   Widget build(BuildContext context) {
-    final Size screenSize = MediaQuery.of(context).size;
     return new Scaffold(
       appBar: new AppBar(
         title: new Text('Verificar cuenta'),
@@ -138,7 +168,7 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
                       title: new TextFormField(
                         initialValue: widget.email,
                         decoration: new InputDecoration(
-                            labelText: 'Correo electrónico o nombre de usuario'),
+                            labelText: 'Nombre de usuario o correo'),
                         keyboardType: TextInputType.emailAddress,
                         validator: (String text){
                           if(text.isEmpty){
@@ -164,7 +194,7 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
                             labelText: 'Código de verificación'),
                         validator: (String text){
                           if(text.length != 6){
-                            return 'El código de verificación tiene 6 dígitos';
+                            return 'El código de verificación debe tener 6 dígitos';
                           }
                           return null;
                         },
@@ -175,6 +205,7 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
                     ),
                   ),
                   new Container(
+                    margin: EdgeInsets.only(top: 10),
                     child: new RoundedLoadingButton(
                       height: 40,
                       color: primaryColor,

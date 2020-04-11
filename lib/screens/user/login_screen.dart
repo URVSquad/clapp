@@ -104,7 +104,7 @@ class _LoginScreenState extends State<LoginScreen> {
       }
       else {
         _btnController.error();
-        Modal().flushbar('Usuario o contraseña incorrectos', icon:Icons.error).show(context);
+        Modal().flushbar('Usuario o contraseña incorrectos', type: 'error').show(context);
         Future.delayed(const Duration(seconds: 1), () {
           setState(() {
             _btnController.reset();
@@ -116,7 +116,7 @@ class _LoginScreenState extends State<LoginScreen> {
     }
     else{
       _btnController.error();
-      Modal().flushbar('Alguno de los campos introducidos presenta algun error.', icon:Icons.error).show(context);
+      Modal().flushbar('Alguno de los campos introducidos presenta algun error.', type: 'error').show(context);
       Future.delayed(const Duration(milliseconds: 500), () {
         _btnController.reset();
       });
@@ -133,10 +133,10 @@ class _LoginScreenState extends State<LoginScreen> {
       body: new Builder(
         builder: (BuildContext context) {
           return new Container(
-            child: new Column(
+            child: new ListView(
               children: <Widget>[
                 new Container(
-                  margin: EdgeInsets.only(bottom: 20, left: 0, right: 20, top: 30),
+                  margin: EdgeInsets.only(bottom: 20, left: 20, right: 20, top: 30),
                   child: new Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
@@ -161,7 +161,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             title: new TextFormField(
                               initialValue: widget.email,
                               decoration: new InputDecoration(
-                                  labelText: 'Correo electrónico o nombre de usuario'),
+                                  labelText: 'Nombre de usuario o correo'),
                               keyboardType: TextInputType.emailAddress,
                               validator: (String text){
                                 if(text.isEmpty){
@@ -199,6 +199,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                         new Container(
+                          margin: EdgeInsets.only(top: 10),
                           child: new RoundedLoadingButton(
                             height: 40,
                             color: primaryColor,
