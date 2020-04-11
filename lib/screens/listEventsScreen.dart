@@ -34,6 +34,12 @@ class _ListEventsScreenState extends State<ListEventsScreen> {
     super.initState();
   }
 
+  String printDate(DateTime date){
+    String print=date.month.toString()+"/"+date.day.toString()+" "
+        +date.hour.toString().padLeft(2, '0') +":"+date.minute.toString().padLeft(2, '0');
+    return print;
+  }
+
   Container cardContent(event) {
     return Container(
       margin: new EdgeInsets.fromLTRB(170.0, 16.0, 16.0, 16.0),
@@ -52,23 +58,29 @@ class _ListEventsScreenState extends State<ListEventsScreen> {
             ),
             new Container(height: 10.0),
             new Container(
-                width: 100,
+                width: 200,
                 child: new Row(
                   children: <Widget>[
                     Icon(
                       Icons.update,
-                      color: Colors.green,
+                      color: Colors.black,
                       size: 24.0,
                     ),
-                    Text(
-                      "",
-                      textAlign: TextAlign.right,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        color: Colors.green,
-                        fontSize: 18,
+                    Container(
+                      width: 60,
+                      child: FittedBox(
+                        child: Text(
+                          printDate(event.start),
+                          textAlign: TextAlign.right,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 10,
+                          ),
+                        ),
                       ),
                     ),
+                    Container(width: 40,),
                     Icon(
                       Icons.favorite,
                       color: Colors.green,
@@ -84,29 +96,6 @@ class _ListEventsScreenState extends State<ListEventsScreen> {
                       ),
                     )
                   ],
-                )),
-            new Container(
-                margin: new EdgeInsets.fromLTRB(180, 0, 0, 0),
-                child: FittedBox(
-                  fit: BoxFit.fitWidth,
-                  child: Row(
-                    children: <Widget>[
-                      Icon(
-                        Icons.favorite,
-                        color: Colors.green,
-                        size: 24.0,
-                      ),
-                      Text(
-                        " hola" + event.votes.toString(),
-                        textAlign: TextAlign.right,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          color: Colors.green,
-                          fontSize: 18,
-                        ),
-                      )
-                    ],
-                  ),
                 )),
           ]),
     );
