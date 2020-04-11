@@ -7,11 +7,12 @@ class Activity{
   String image;
   String description;
   String hashtag;
-  int category;
+  String category;
   String date;
+  int votes;
 
   Activity({this.id, this.title, this.image, this.description,
-    this.category, this.date});
+    this.category, this.date, this.votes});
 
   factory Activity.fromJson(Map<String, dynamic> parsedJson){
     return Activity(
@@ -23,6 +24,7 @@ class Activity{
         //hashtag: parsedJson['hashtag'],
         date: parsedJson['creation'],
         category: parsedJson['category'],
+        votes: parsedJson['votes']
     );
   }
 
