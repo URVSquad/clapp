@@ -7,7 +7,7 @@ class Event {
   String image;
   String description;
   String hashtag;
-  Category category;
+  String category;
   String date;
   String start;
   int duration;

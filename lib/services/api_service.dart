@@ -21,7 +21,7 @@ class APIService {
   }
 
 
-  Future<String> postActivity(Activity activity) async {
+  Future<int> postActivity(Activity activity) async {
     var url = rootUrl + "/activities";
     var payload = activity.toJson();
 
@@ -30,7 +30,7 @@ class APIService {
         body: payload
     );
 
-    return response.body;
+    return jsonDecode(response.body)['status'];
   }
 
   Future<String> getEvents() async {
@@ -39,7 +39,7 @@ class APIService {
     return response.body;
   }
 
-  Future<String> postEvent(Event event) async {
+  Future<int> postEvent(Event event) async {
     var url = rootUrl + "/activities";
     var payload = event.toJson();
 
@@ -48,7 +48,7 @@ class APIService {
         body: payload
     );
 
-    return response.body;
+    return jsonDecode(response.body)['status'];
   }
 
   String buildAuthenticationHeader() {
