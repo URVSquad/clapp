@@ -6,21 +6,74 @@ import 'package:flutter/material.dart';
 
 class ListActivitiesScreen extends StatefulWidget {
   final ListActivities list;
+  final String title;
+  final String claim;
+  final String color;
 
-  ListActivitiesScreen(this.list) : super();
+  ListActivitiesScreen(this.list, this.title, this.claim, this.color) : super();
 
   @override
   _ListActivitiesScreenState createState() =>
-      _ListActivitiesScreenState(this.list);
+      _ListActivitiesScreenState(this.list, this.title, this.claim, this.color);
 }
 
 class _ListActivitiesScreenState extends State<ListActivitiesScreen> {
   final ListActivities list;
-  _ListActivitiesScreenState(this.list) : super();
+  final String title;
+  final String claim;
+  final String color;
+  _ListActivitiesScreenState(this.list, this.title, this.claim, this.color) : super();
 
   @override
   void initState() {
     super.initState();
+  }
+
+  Container cardContent(activity) {
+    return Container(
+      margin: new EdgeInsets.fromLTRB(170.0, 16.0, 16.0, 16.0),
+      child: new Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            new Container(height: 4.0),
+            new Container(
+              height: 60.0,
+              child: Text(
+                activity.title,
+                style: TextStyle(
+                  fontSize: 18,
+                ),
+              ),
+            ),
+            new Container(height: 10.0),
+            new Container(
+                margin: new EdgeInsets.fromLTRB(120, 0, 0, 0),
+                child: FittedBox(
+                  fit: BoxFit.fitWidth,
+                  child: Row(
+                    children: <Widget>[
+                      Icon(
+                        Icons.favorite,
+                        color: Colors.green,
+                        size: 24.0,
+                      )
+                      ,
+                      Text(
+                        " " + activity.votes.toString(),
+                        textAlign: TextAlign.right,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          color: Colors.green,
+                          fontSize: 18,
+                        ),
+                      )
+                    ],
+                  ),
+                )
+            )
+          ]
+      ),
+    );
   }
 
   final image = new Container(
@@ -31,26 +84,6 @@ class _ListActivitiesScreenState extends State<ListActivitiesScreen> {
         child: Image.asset('assets/img/yoga.jpg'),
         fit: BoxFit.cover,
       ));
-
-  Container cardContent(activity){
-    return Container(
-      margin: new EdgeInsets.fromLTRB(170.0, 16.0, 16.0, 16.0),
-      child: new Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          new Container(height: 4.0),
-          new Text(activity.title),
-          new Container(height: 10.0),
-          new Text("hola"),
-          new Container(
-              margin: new EdgeInsets.symmetric(vertical: 8.0),
-              height: 2.0,
-              width: 18.0,
-              color: new Color(0xff00c6ff)),
-        ],
-      ),
-    );
-  }
 
   final card = Container(
     height: 124.0,
@@ -76,14 +109,25 @@ class _ListActivitiesScreenState extends State<ListActivitiesScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          backgroundColor: Color(int.parse(color)),
           title: Text(
-            'Explorar',
+            title,
             style: TextStyle(fontWeight: FontWeight.normal),
           ),
         ),
         body: new ListView(
           children: <Widget>[
-            Text("Claim marina raro"),
+
+            Container(
+              height: 50.0,
+              margin: new EdgeInsets.fromLTRB(20, 20, 20, 0),
+              child: Text(claim,
+                  textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 20
+                ),
+              ),
+            ),
             ListView.separated(
               shrinkWrap: true,
               physics: ClampingScrollPhysics(),
@@ -96,16 +140,18 @@ class _ListActivitiesScreenState extends State<ListActivitiesScreen> {
                 //vars
                 Activity activity = list.getActivity(index);
                 return GestureDetector(
-                  onTap: () {
-                    print("Activty clicked");
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => ActivityScreen(activity: activity,)),
-                    );
-                  },
-                  child: new Stack(
-                    children: <Widget>[card, image, cardContent(activity)],
-                  ));
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ActivityScreen(
+                                  activity: activity,
+                                )),
+                      );
+                    },
+                    child: new Stack(
+                      children: <Widget>[card, image, cardContent(activity)],
+                    ));
               },
             ),
           ],
