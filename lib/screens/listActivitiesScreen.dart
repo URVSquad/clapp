@@ -22,7 +22,9 @@ class _ListActivitiesScreenState extends State<ListActivitiesScreen> {
   final String title;
   final String claim;
   final String color;
-  _ListActivitiesScreenState(this.list, this.title, this.claim, this.color) : super();
+
+  _ListActivitiesScreenState(this.list, this.title, this.claim, this.color)
+      : super();
 
   @override
   void initState() {
@@ -54,25 +56,22 @@ class _ListActivitiesScreenState extends State<ListActivitiesScreen> {
                     children: <Widget>[
                       Icon(
                         Icons.favorite,
-                        color: Colors.green,
+                        color: Color(0xffb71c1c),
                         size: 24.0,
-                      )
-                      ,
+                      ),
                       Text(
                         " " + activity.votes.toString(),
                         textAlign: TextAlign.right,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
-                          color: Colors.green,
+                          color: Color(0xffb71c1c),
                           fontSize: 18,
                         ),
                       )
                     ],
                   ),
-                )
-            )
-          ]
-      ),
+                ))
+          ]),
     );
   }
 
@@ -88,12 +87,13 @@ class _ListActivitiesScreenState extends State<ListActivitiesScreen> {
   final card = Container(
     height: 124.0,
     decoration: new BoxDecoration(
-      color: new Color(0xfff5f5f5),
+      color: new Color(0xfffbfbe9e7),
+      //FIXME: This should be with the class color
       shape: BoxShape.rectangle,
       borderRadius: new BorderRadius.circular(8.0),
       boxShadow: [
         BoxShadow(
-          blurRadius: 1.0, // has the effect of softening the shadow
+          blurRadius: 4.0, // has the effect of softening the shadow
           spreadRadius: 1.0, // has the effect of extending the shadow
           offset: Offset(
             2.0, // horizontal, move right 10
@@ -112,20 +112,16 @@ class _ListActivitiesScreenState extends State<ListActivitiesScreen> {
           backgroundColor: Color(int.parse(color)),
           title: Text(
             title,
-            style: TextStyle(fontWeight: FontWeight.normal),
           ),
         ),
         body: new ListView(
           children: <Widget>[
-
             Container(
-              height: 50.0,
               margin: new EdgeInsets.fromLTRB(20, 20, 20, 0),
-              child: Text(claim,
-                  textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 20
-                ),
+              child: Text(
+                claim,
+                textAlign: TextAlign.start,
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
             ),
             ListView.separated(
@@ -134,7 +130,7 @@ class _ListActivitiesScreenState extends State<ListActivitiesScreen> {
               separatorBuilder: (BuildContext context, int index) => Divider(
                 color: Colors.white,
               ),
-              padding: EdgeInsets.all(20),
+              padding: EdgeInsets.all(15),
               itemCount: list.getLength(),
               itemBuilder: (BuildContext context, int index) {
                 //vars

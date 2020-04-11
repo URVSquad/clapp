@@ -1,11 +1,14 @@
 import 'package:betogether/models/activity.dart';
+import 'package:betogether/models/event.dart';
 import 'package:betogether/models/listActivities.dart';
+import 'package:betogether/models/listEvents.dart';
 import 'package:betogether/screens/single_views/activity_screen.dart';
+import 'package:betogether/screens/single_views/event_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ListEventsScreen extends StatefulWidget {
-  final ListActivities list;
+  final ListEvents list;
   final String title;
   final String claim;
   final String color;
@@ -18,18 +21,20 @@ class ListEventsScreen extends StatefulWidget {
 }
 
 class _ListEventsScreenState extends State<ListEventsScreen> {
-  final ListActivities list;
+  final ListEvents list;
   final String title;
   final String claim;
   final String color;
-  _ListEventsScreenState(this.list, this.title, this.claim, this.color) : super();
+
+  _ListEventsScreenState(this.list, this.title, this.claim, this.color)
+      : super();
 
   @override
   void initState() {
     super.initState();
   }
 
-  Container cardContent(activity) {
+  Container cardContent(event) {
     return Container(
       margin: new EdgeInsets.fromLTRB(170.0, 16.0, 16.0, 16.0),
       child: new Column(
@@ -39,7 +44,7 @@ class _ListEventsScreenState extends State<ListEventsScreen> {
             new Container(
               height: 60.0,
               child: Text(
-                activity.title,
+                event.title,
                 style: TextStyle(
                   fontSize: 18,
                 ),
@@ -47,7 +52,41 @@ class _ListEventsScreenState extends State<ListEventsScreen> {
             ),
             new Container(height: 10.0),
             new Container(
-                margin: new EdgeInsets.fromLTRB(120, 0, 0, 0),
+                width: 100,
+                child: new Row(
+                  children: <Widget>[
+                    Icon(
+                      Icons.update,
+                      color: Colors.green,
+                      size: 24.0,
+                    ),
+                    Text(
+                      "",
+                      textAlign: TextAlign.right,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        color: Colors.green,
+                        fontSize: 18,
+                      ),
+                    ),
+                    Icon(
+                      Icons.favorite,
+                      color: Colors.green,
+                      size: 24.0,
+                    ),
+                    Text(
+                      " " + event.votes.toString(),
+                      textAlign: TextAlign.right,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        color: Colors.green,
+                        fontSize: 18,
+                      ),
+                    )
+                  ],
+                )),
+            new Container(
+                margin: new EdgeInsets.fromLTRB(180, 0, 0, 0),
                 child: FittedBox(
                   fit: BoxFit.fitWidth,
                   child: Row(
@@ -56,10 +95,9 @@ class _ListEventsScreenState extends State<ListEventsScreen> {
                         Icons.favorite,
                         color: Colors.green,
                         size: 24.0,
-                      )
-                      ,
+                      ),
                       Text(
-                        " " + activity.votes.toString(),
+                        " hola" + event.votes.toString(),
                         textAlign: TextAlign.right,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
@@ -69,10 +107,8 @@ class _ListEventsScreenState extends State<ListEventsScreen> {
                       )
                     ],
                   ),
-                )
-            )
-          ]
-      ),
+                )),
+          ]),
     );
   }
 
@@ -117,15 +153,13 @@ class _ListEventsScreenState extends State<ListEventsScreen> {
         ),
         body: new ListView(
           children: <Widget>[
-
             Container(
               height: 50.0,
               margin: new EdgeInsets.fromLTRB(20, 20, 20, 0),
-              child: Text(claim,
+              child: Text(
+                claim,
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontSize: 20
-                ),
+                style: TextStyle(fontSize: 20),
               ),
             ),
             ListView.separated(
@@ -138,19 +172,19 @@ class _ListEventsScreenState extends State<ListEventsScreen> {
               itemCount: list.getLength(),
               itemBuilder: (BuildContext context, int index) {
                 //vars
-                Activity activity = list.getActivity(index);
+                Event event = list.getEvent(index);
                 return GestureDetector(
                     onTap: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => ActivityScreen(
-                              activity: activity,
-                            )),
+                            builder: (context) => EventScreen(
+                                  event: event,
+                                )),
                       );
                     },
                     child: new Stack(
-                      children: <Widget>[card, image, cardContent(activity)],
+                      children: <Widget>[card, image, cardContent(event)],
                     ));
               },
             ),
