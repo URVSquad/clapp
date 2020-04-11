@@ -1,5 +1,6 @@
 import 'package:betogether/models/listActivities.dart';
 import 'package:betogether/screens/listActivitiesScreen.dart';
+import 'package:betogether/screens/listEventsScreen.dart';
 import 'package:betogether/services/api_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -23,10 +24,17 @@ class _ListScreenState extends State<ListScreen>
     super.initState();
   }
 
-  GestureDetector event(String title, String asset) {
+  GestureDetector event(String title, String color, String claim) {
     return GestureDetector(
         onTap: () {
-          print("Event category clicked");
+          APIService api = new APIService();
+          Future<ListActivities> futureList = api.getActivities();
+          futureList.then((list) async {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ListEventsScreen(list, title, claim, color)),
+            );
+          });
         },
         child: Container(
           child: Center(
@@ -44,10 +52,7 @@ class _ListScreenState extends State<ListScreen>
                 topRight: const Radius.circular(radius),
                 bottomLeft: const Radius.circular(radius),
                 bottomRight: const Radius.circular(radius)),
-            image: DecorationImage(
-              image: AssetImage(asset),
-              fit: BoxFit.cover,
-            ),
+                color: Color(int.parse(color)),
           ),
         ));
   }
@@ -94,14 +99,13 @@ class _ListScreenState extends State<ListScreen>
       crossAxisCount: 1,
       childAspectRatio: 3,
       children: <Widget>[
-        event("Top diario", "assets/img/deportes.jpg"),
-        event("Top semanal", "assets/img/deportes.jpg"),
-        event("Ejercicio", "assets/img/deportes.jpg"),
-        event("Cocinitas", "assets/img/deportes.jpg"),
-        event("Eventos audiovisuales", "assets/img/deportes.jpg"),
-        event("Libros", "assets/img/deportes.jpg"),
-        event("Juegos", "assets/img/deportes.jpg"),
-        event("Peques", "assets/img/deportes.jpg"),
+        event("Top diario", "0xffffecb3", "Nuestro top diario"),
+        event("Top semanal", "0xffffecb3", "Nuestro top semanal"),
+        event("Ejercicio", "0xffffecb3", "💪 ¡no te muevas solo!"),
+        event("Cultura", "0xffffecb3", "Self love club 📚"),
+        event("Peques", "0xffffecb3", "Planazos a pequeña escala. 👻"),
+        event("Party time", "0xffffecb3", "¡La vida hay que celebrarla! desde casa. 🏡"),
+        event("Otros", "0xffffecb3", "Planazos de otro mundo 🚀  "),
       ],
     );
   }
