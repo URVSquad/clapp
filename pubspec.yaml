@@ -14,6 +14,13 @@ dependencies:
   flushbar: ^1.10.0
   rounded_loading_button: ^1.0.0
   http: "0.12.0+4"
+  flutter_launcher_icons: "^0.7.3"
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/icon/icon.png"
+
 
 dev_dependencies:
   test:  "1.14.2"
