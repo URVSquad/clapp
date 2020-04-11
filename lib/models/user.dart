@@ -5,6 +5,12 @@ class User {
   String name;
   String password;
   String username;
+
+  String website;
+  String description;
+  String nif;
+  bool is_enterprise;
+
   String repeatedPassword;
   String sub;
   bool confirmed = false;
@@ -22,7 +28,20 @@ class User {
         user.name = attribute.getValue();
       } else if (attribute.getName() == 'sub') {
         user.sub = attribute.getValue();
+      } else if (attribute.getName() == 'website') {
+        user.website = attribute.getValue();
+      } else if (attribute.getName() == 'nig') { //FIXME: Mistake in the userpool, should be nif
+        user.nif = attribute.getValue();
+      } else if (attribute.getName() == 'description') {
+        user.description = attribute.getValue();
+      } else if (attribute.getName() == 'is_enterprise') {
+        if(int.tryParse(attribute.getValue()) == 1){
+          user.is_enterprise = true;
+        } else{
+          user.is_enterprise = false;
+        }
       }
+
     });
     return user;
   }

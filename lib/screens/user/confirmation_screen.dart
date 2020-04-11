@@ -40,6 +40,7 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
   Future<String> _send_request() async{
     _formKey.currentState.save();
     String message;
+    accountConfirmed = false;
     try {
       accountConfirmed =
           await _userService.confirmAccount(_user.email, confirmationCode);
@@ -50,12 +51,15 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
           e.code == 'NotAuthorizedException' ||
           e.code == 'UserNotFoundException' ||
           e.code == 'ResourceNotFoundException') {
+        print(e.code);
         //TODO:This should be handled better
         message = 'Código de verificación o usuario incorrecto';
       } else {
+        print(e);
         message = 'Error desconocido, disculpa las molestias';
       }
     } catch (e) {
+      print(e);
       message = 'Error desconocido, disculpa las molestias';
     }
     return message;
