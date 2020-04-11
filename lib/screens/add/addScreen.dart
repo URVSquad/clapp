@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'newActivityScreen.dart';
+import 'newItemScreen.dart';
 
 class AddScreen extends StatefulWidget {
   AddScreen() : super();
@@ -22,11 +22,11 @@ class _AddScreenState extends State<AddScreen> {
             padding: EdgeInsets.only(left: 20.0, right: 20.0, bottom: 5.0),
             width: screenSize.width,
             child: RaisedButton(
-              child: Text('Button', style: TextStyle(fontSize: 20)),
+              child: Text('Actividad', style: TextStyle(fontSize: 20)),
               onPressed: () {
                 Navigator.push(
                   context,
-                  new MaterialPageRoute(builder: (context) => new NewActivityScreen(false)),
+                  new MaterialPageRoute(builder: (context) => new NewItemScreen(false)),
                 );
               },
             ),
@@ -35,11 +35,11 @@ class _AddScreenState extends State<AddScreen> {
             padding: EdgeInsets.only(left: 20.0, right: 20.0, bottom: 5.0),
             width: screenSize.width,
             child: RaisedButton(
-              child: Text('Button', style: TextStyle(fontSize: 20)),
+              child: Text('Evento', style: TextStyle(fontSize: 20)),
               onPressed: () {
                 Navigator.push(
                   context,
-                  new MaterialPageRoute(builder: (context) => new NewActivityScreen(true)),
+                  new MaterialPageRoute(builder: (context) => new NewItemScreen(true)),
                 );
               },
             ),
