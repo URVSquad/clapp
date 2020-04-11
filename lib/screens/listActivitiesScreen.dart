@@ -15,7 +15,6 @@ class ListActivitiesScreen extends StatefulWidget {
 
 class _ListActivitiesScreenState extends State<ListActivitiesScreen> {
   final ListActivities list;
-
   _ListActivitiesScreenState(this.list) : super();
 
   @override
@@ -32,23 +31,25 @@ class _ListActivitiesScreenState extends State<ListActivitiesScreen> {
         fit: BoxFit.cover,
       ));
 
-  final cardContent = new Container(
-    margin: new EdgeInsets.fromLTRB(170.0, 16.0, 16.0, 16.0),
-    child: new Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        new Container(height: 4.0),
-        new Text("hola"),
-        new Container(height: 10.0),
-        new Text("hola"),
-        new Container(
-            margin: new EdgeInsets.symmetric(vertical: 8.0),
-            height: 2.0,
-            width: 18.0,
-            color: new Color(0xff00c6ff)),
-      ],
-    ),
-  );
+  Container cardContent(activity){
+    return Container(
+      margin: new EdgeInsets.fromLTRB(170.0, 16.0, 16.0, 16.0),
+      child: new Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          new Container(height: 4.0),
+          new Text(activity.title),
+          new Container(height: 10.0),
+          new Text("hola"),
+          new Container(
+              margin: new EdgeInsets.symmetric(vertical: 8.0),
+              height: 2.0,
+              width: 18.0,
+              color: new Color(0xff00c6ff)),
+        ],
+      ),
+    );
+  }
 
   final card = Container(
     height: 124.0,
@@ -99,7 +100,7 @@ class _ListActivitiesScreenState extends State<ListActivitiesScreen> {
                     print("Activty clicked");
                   },
                   child: new Stack(
-                    children: <Widget>[card, image, cardContent],
+                    children: <Widget>[card, image, cardContent(activity)],
                   ));
               },
             ),
