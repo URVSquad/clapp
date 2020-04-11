@@ -16,7 +16,6 @@ class APIService {
   Future<ListActivities> getActivities() async {
     var url = rootUrl + "/activities";
     var response = await http.get(url);
-    print(response.body);
     ListActivities list = ListActivities.fromJson(jsonDecode(response.body));
     return list;
   }
