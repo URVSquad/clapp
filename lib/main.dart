@@ -10,8 +10,8 @@ const primaryColor = Color(0xffc5e1a5);
 const primaryColorLight = Color(0xfff8ffd7);
 const primaryColorDark = Color(0xff94af76);
 
-const title = TextStyle(fontSize: 35, fontWeight: FontWeight.bold);
-const subtitle = TextStyle(fontSize: 25);
+const title = TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+const subtitle = TextStyle(fontSize: 20);
 
 class MyApp extends StatelessWidget {
   @override
