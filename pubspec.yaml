@@ -8,6 +8,14 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  image_picker: 0.6.4
+  intl: 0.16.1
+  flutter_duration_picker: ^1.0.4
+  flutter_localizations:
+    sdk: flutter
+
+  # The following adds the Cupertino Icons font to your application.
+  # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
   amazon_cognito_identity_dart_2: ^0.1.12+2
   shared_preferences: "^0.4.1"
@@ -21,7 +29,6 @@ flutter_icons:
   android: true
   ios: true
   image_path: "assets/icon/icon.png"
-
 
 dev_dependencies:
   test:  "1.14.2"

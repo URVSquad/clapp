@@ -1,17 +1,15 @@
-import 'package:betogether/models/user.dart';
-import 'package:betogether/screens/user/confirmation_screen.dart';
+import 'package:amazon_cognito_identity_dart_2/src/cognito_user_pool.dart';
 import 'package:betogether/screens/user/profileScreen.dart';
-import 'package:betogether/screens/user/signup_screen.dart';
 import 'package:betogether/screens/user/singup_login_screen.dart';
 import 'package:betogether/services/cognito_service.dart';
-import 'package:amazon_cognito_identity_dart_2/src/cognito_user_pool.dart';
+import 'package:betogether/services/pools_vars.dart' as global;
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+
 import '../main.dart';
-import 'addScreen.dart';
+import 'add/addScreen.dart';
 import 'homeScreen.dart';
-import 'homeScreen.dart';
-import 'package:betogether/services/pools_vars.dart' as global;
+
 
 
 class InterfacePage extends StatefulWidget {

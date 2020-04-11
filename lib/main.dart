@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'screens/interfaceScreen.dart';
 
 void main() {
@@ -55,7 +56,14 @@ class MyApp extends StatelessWidget {
               ),
           ),
         ),
-        home: InterfacePage(title: 'BeTogether',)
+        home: InterfacePage(title: 'BeTogether',),
+        localizationsDelegates: [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+        ],
+        supportedLocales: [
+          const Locale('es'),
+        ],
     );
   }
 }
