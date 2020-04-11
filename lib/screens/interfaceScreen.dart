@@ -47,6 +47,7 @@ class _InterfacePageState extends State<InterfacePage> {
         length: 4,
         child: new Scaffold(
           body: TabBarView(
+            physics: NeverScrollableScrollPhysics(),
             children: [
               new HomeScreen(),
               new ListScreen(),
