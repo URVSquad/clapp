@@ -198,49 +198,42 @@ class _NewItemScreenState extends State<NewItemScreen> {
   }
 
   Future<bool> sendItem() async {
+    bool success = false;
     APIService api = new APIService();
     UserService _userService = new UserService(userPool);
     await _userService.init();
-    Future<bool> auth = _userService.checkAuthenticated();
+    bool auth = await _userService.checkAuthenticated();
 
-    auth.then((value) async {
-      if (value) {
-        if (widget.event) {
-          Future<int> future = api.postEvent(_newItem);
-          future.then((value) async {
-            if (value == 200) {
-              print("OK");
-              return true;
-            } else {
-              print("NO OK");
-              print(value);
-              Modal().flushbar('Error inesperado', type: 'error').show(context);
-              return false;
-            }
-          });
+    if (auth) {
+      if (widget.event) {
+        int response = await api.postEvent(_newItem);
+        print("value: $response");
+        if (response == 200) {
+          print("OK");
+          success = true;
         } else {
-          Future<int> future = api.postActivity(_newItem);
-          future.then((value) async {
-            if (value == 200) {
-              print("OK");
-              return true;
-            } else {
-              print("NO OK");
-              print(value);
-              Modal().flushbar('Error inesperado', type: 'error').show(context);
-              return false;
-            }
-          });
+          print("NO OK");
+          print(response);
+          Modal().flushbar('Error inesperado', type: 'error').show(context);
         }
       } else {
-        Modal()
-            .flushbar('Error al verificar tu cuenta de usuario!', type: 'error')
-            .show(context);
-        return false;
+        int response = await api.postActivity(_newItem);
+        print("value: $response");
+        if (response == 200) {
+          print("OK");
+          success = true;
+        } else {
+          print("NO OK");
+          print(response);
+          Modal().flushbar('Error inesperado', type: 'error').show(context);
+        }
       }
-      return false;
-    });
-    return false;
+    } else {
+      Modal()
+          .flushbar('Error al verificar tu cuenta de usuario!', type: 'error')
+          .show(context);
+    }
+    return success;
   }
 
   bool validate() {
@@ -344,8 +337,8 @@ class _NewItemScreenState extends State<NewItemScreen> {
                     ListTile(
                       title: OutlineButton(
                         child: Text("Selecciona una imagen"),
-                        onPressed: () {
-                          selectImage();
+                        onPressed: () async {
+                          await selectImage();
                           setState(() {
                             _base64image =
                                 base64Encode(_imageFile.readAsBytesSync());
@@ -372,9 +365,10 @@ class _NewItemScreenState extends State<NewItemScreen> {
                 ),
               ),
               Container(
-                child: RaisedButton(
+                child: ListTile(
+                  title: RaisedButton(
                   child: Text('Enviar'),
-                  onPressed: () {
+                  onPressed: () async {
                     if (validate()) {
                       if (widget.event)
                         _newItem = new Event(
@@ -382,7 +376,7 @@ class _NewItemScreenState extends State<NewItemScreen> {
                             description: _description,
                             url: _url,
                             hashtag: _hashtag,
-                            category: _category.toString(),
+                            category: _category.toString().split('.').last,
                             image: _base64image,
                             start: DateTime(
                                 _startDate.year,
@@ -403,21 +397,20 @@ class _NewItemScreenState extends State<NewItemScreen> {
                             description: _description,
                             url: _url,
                             hashtag: _hashtag,
-                            category: _category.toString(),
+                            category: _category.toString().split('.').last,
                             image: _base64image);
 
-                      sendItem().then((value) async {
-                        print("value $value");
-                        if (value) {
-                          Navigator.pushReplacement(
-                            context,
-                            new MaterialPageRoute(
-                                builder: (context) => new InterfacePage(
-                                    flushbar: Modal().flushbar(
-                                        "Aportación registrada correctamente!"))),
-                          );
-                        }
-                      });
+                      bool status = await sendItem();
+                      print("return $status");
+                      if (status) {
+                        Navigator.pushReplacement(
+                          context,
+                          new MaterialPageRoute(
+                              builder: (context) => new InterfacePage(
+                                  flushbar: Modal().flushbar(
+                                      "Aportación registrada correctamente!"))),
+                        );
+                      }
                     } else {
                       Modal()
                           .flushbar('Faltan campos por completar!',
@@ -425,7 +418,7 @@ class _NewItemScreenState extends State<NewItemScreen> {
                           .show(context);
                     }
                   },
-                ),
+                )),
               )
             ])),
       ),
