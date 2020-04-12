@@ -117,6 +117,7 @@ class ProfileScreenState extends State<ProfileScreen>
       Future<User> user = _userService.getCurrentUser();
       user.then((user) async  {
         _user = user;
+        print(user.sub);
         //print(user.is_enterprise);
         APIService api = new APIService();
         Future<ListEvents> futureEventsList = api.getEventsByUser(user.sub); //user.sub
@@ -144,7 +145,11 @@ class ProfileScreenState extends State<ProfileScreen>
 
 
   Widget userprofile() {
-    if(_user.is_enterprise == null){
+    print(_user.is_enterprise);
+    if(_user.is_enterprise == null && _user.sub != null){
+      return user();
+    }
+    else if(_user.is_enterprise == null){
       return Text('');
     }
     else if (_user.is_enterprise){
