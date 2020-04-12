@@ -34,9 +34,14 @@ class _ListEventsScreenState extends State<ListEventsScreen> {
     super.initState();
   }
 
-  String printDate(DateTime date){
-    String print=date.month.toString()+"/"+date.day.toString()+" "
-        +date.hour.toString().padLeft(2, '0') +":"+date.minute.toString().padLeft(2, '0');
+  String printDate(DateTime date) {
+    String print = date.month.toString() +
+        "/" +
+        date.day.toString() +
+        " " +
+        date.hour.toString().padLeft(2, '0') +
+        ":" +
+        date.minute.toString().padLeft(2, '0');
     return print;
   }
 
@@ -80,7 +85,9 @@ class _ListEventsScreenState extends State<ListEventsScreen> {
                         ),
                       ),
                     ),
-                    Container(width: 40,),
+                    Container(
+                      width: 40,
+                    ),
                     Icon(
                       Icons.favorite,
                       color: Colors.green,
@@ -110,25 +117,27 @@ class _ListEventsScreenState extends State<ListEventsScreen> {
         fit: BoxFit.cover,
       ));
 
-  final card = Container(
-    height: 124.0,
-    decoration: new BoxDecoration(
-      color: new Color(0xfff5f5f5),
-      shape: BoxShape.rectangle,
-      borderRadius: new BorderRadius.circular(8.0),
-      boxShadow: [
-        BoxShadow(
-          blurRadius: 1.0, // has the effect of softening the shadow
-          spreadRadius: 1.0, // has the effect of extending the shadow
-          offset: Offset(
-            2.0, // horizontal, move right 10
-            2.0, // vertical, move down 10
-          ),
-          color: Colors.grey,
+  Container getCard(color) {
+    return Container(
+        height: 124.0,
+        decoration: new BoxDecoration(
+          color: new Color(int.parse(color)),
+          shape: BoxShape.rectangle,
+          borderRadius: new BorderRadius.circular(8.0),
+          boxShadow: [
+            BoxShadow(
+              blurRadius: 1.0, // has the effect of softening the shadow
+              spreadRadius: 1.0, // has the effect of extending the shadow
+              offset: Offset(
+                2.0, // horizontal, move right 10
+                2.0, // vertical, move down 10
+              ),
+              color: Colors.grey,
+            )
+          ],
         )
-      ],
-    ),
-  );
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -173,7 +182,11 @@ class _ListEventsScreenState extends State<ListEventsScreen> {
                       );
                     },
                     child: new Stack(
-                      children: <Widget>[card, image, cardContent(event)],
+                      children: <Widget>[
+                        getCard(color),
+                        image,
+                        cardContent(event)
+                      ],
                     ));
               },
             ),
