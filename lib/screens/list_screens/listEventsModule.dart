@@ -8,19 +8,20 @@ class ListEventsModule extends StatefulWidget {
   final ListEvents list;
   final String claim;
   final String color;
+
   ListEventsModule(this.list, this.claim, this.color) : super();
 
   @override
   _ListActivitiesModuleState createState() =>
       _ListActivitiesModuleState(this.list, this.claim, this.color);
 }
+
 class _ListActivitiesModuleState extends State<ListEventsModule> {
   final ListEvents list;
   final String claim;
   final String color;
 
-  _ListActivitiesModuleState(this.list, this.claim, this.color)
-      : super();
+  _ListActivitiesModuleState(this.list, this.claim, this.color) : super();
 
   String printDate(DateTime date) {
     String print = date.month.toString() +
@@ -35,13 +36,13 @@ class _ListActivitiesModuleState extends State<ListEventsModule> {
 
   Container cardContent(event) {
     return Container(
-      margin: new EdgeInsets.fromLTRB(170.0, 16.0, 16.0, 16.0),
-      child: new Column(
+        margin: new EdgeInsets.fromLTRB(170.0, 16.0, 16.0, 16.0),
+        child: new Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             new Container(height: 4.0),
             new Container(
-              height: 60.0,
+              height: 50.0,
               child: Text(
                 event.title,
                 style: TextStyle(
@@ -49,64 +50,73 @@ class _ListActivitiesModuleState extends State<ListEventsModule> {
                 ),
               ),
             ),
-            new Container(height: 10.0),
             new Container(
                 width: 200,
-                child: new Row(
-                  children: <Widget>[
-                    Icon(
-                      Icons.update,
-                      color: Colors.black,
-                      size: 24.0,
-                    ),
-                    Container(
-                      width: 60,
-                      child: FittedBox(
-                        child: Text(
-                          printDate(event.start),
-                          textAlign: TextAlign.right,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 10,
-                          ),
+                child: new Row(children: <Widget>[
+                  Icon(
+                    Icons.update,
+                    color: Colors.black,
+                    size: 24.0,
+                  ),
+                  Container(
+                    width: 60,
+                    child: FittedBox(
+                      child: Text(
+                        printDate(event.start),
+                        textAlign: TextAlign.right,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                          fontSize: 10,
                         ),
                       ),
                     ),
-                    Container(
-                      width: 40,
+                  )
+                ])),
+            new Container(
+                width: 200,
+                child: new Row(children: <Widget>[
+                  Icon(
+                    Icons.favorite,
+                    color: Color(0xffb71c1c),
+                    size: 24.0,
+                  ),
+                  Text(
+                    " " + event.votes.toString(),
+                    textAlign: TextAlign.right,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      color: Color(0xffb71c1c),
+                      fontSize: 18,
                     ),
-                    Icon(
-                      Icons.favorite,
-                      color: Colors.green,
-                      size: 24.0,
-                    ),
-                    Text(
-                      " " + event.votes.toString(),
-                      textAlign: TextAlign.right,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        color: Colors.green,
-                        fontSize: 18,
-                      ),
-                    )
-                  ],
-                )),
-          ]),
-    );
+                  ),
+                  Container(width: 20,),
+                  Icon(
+                    Icons.business_center,
+                    color: Colors.black,
+                    size: 24.0,
+                  ),
+                ]
+                )
+            ),
+          ],
+        ));
   }
 
-  Container getImage(String image){
-    if (image==null){
-      return Container(margin: new EdgeInsets.fromLTRB(10, 12.5, 0, 10),
+  Container getImage(String image) {
+    if (image == null) {
+      return Container(
+          margin: new EdgeInsets.fromLTRB(10, 12.5, 0, 10),
           height: 100,
           width: 140,
           child: FittedBox(
             child: Image.asset("assets/img/imageNotFound.jpg"),
             fit: BoxFit.cover,
           ));
-    }else{
-      return Container(margin: new EdgeInsets.fromLTRB(10, 12.5, 0, 10),
+    } else {
+      return Container(
+          margin: new EdgeInsets.fromLTRB(10, 12.5, 0, 10),
           height: 100,
           width: 140,
           child: FittedBox(
@@ -134,8 +144,7 @@ class _ListActivitiesModuleState extends State<ListEventsModule> {
               color: Colors.grey,
             )
           ],
-        )
-    );
+        ));
   }
 
   Widget build(BuildContext context) {
@@ -167,8 +176,8 @@ class _ListActivitiesModuleState extends State<ListEventsModule> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => EventScreen(
-                          event: event,
-                        )),
+                              event: event,
+                            )),
                   );
                 },
                 child: new Stack(
