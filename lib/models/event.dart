@@ -11,9 +11,10 @@ class Event {
   DateTime start;
   DateTime end;
   int votes;
+  String user;
 
   Event({this.id, this.title, this.image, this.description,
-    this.category, this.start,this.end, this.votes, this.url, this.hashtag});
+    this.category, this.start,this.end, this.votes, this.url, this.hashtag, this.user});
 
   factory Event.fromJson(Map<String, dynamic> parsedJson){
     return Event(
@@ -25,7 +26,9 @@ class Event {
         hashtag: parsedJson['hashtag'],
         start: DateTime.parse(parsedJson['event_start']),
         end: DateTime.parse(parsedJson['event_end']),
-    votes: parsedJson['votes']
+        votes: parsedJson['votes'],
+        category: parsedJson['category'],
+        user: parsedJson['user'],
     );
   }
 
@@ -38,6 +41,9 @@ class Event {
         'description': description,
         'date': date,
         'event_start': start,
-        'event_end': start
+        'event_end': start,
+        'category': category,
+        'user': user,
+        'hashtag': hashtag,
       };
 }

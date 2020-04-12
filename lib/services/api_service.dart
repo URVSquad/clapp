@@ -36,14 +36,15 @@ class APIService {
     var payload = activity.toJson();
 
     var auth = await buildAuthenticationHeader();
-    print(auth);
+    var user = await _userService.getCurrentUser();
     payload['id'] = '1';
     payload['date'] = '1';
+    payload['user'] = user.sub;
     print(payload);
 
     var response = await http.post(url,
         headers: {'Authorization': auth},
-        body: payload
+        body: json.encode(payload)
     );
 
     print(response.statusCode);
@@ -72,12 +73,19 @@ class APIService {
     var payload = event.toJson();
 
     var auth = await buildAuthenticationHeader();
-    print(auth);
+    var user = await _userService.getCurrentUser();
+    payload['id'] = '1';
+    payload['date'] = '1';
+    payload['user'] = user.sub;
+    print(payload);
 
     var response = await http.post(url,
         headers: {'Authorization': auth},
-        body: payload
+        body: json.encode(payload)
     );
+
+    print(response.statusCode);
+    print(response.body);
 
     return jsonDecode(response.body)['status'];
   }

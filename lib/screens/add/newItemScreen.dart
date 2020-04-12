@@ -407,7 +407,7 @@ class _NewItemScreenState extends State<NewItemScreen> {
                             image: _base64image);
 
                       sendItem().then((value) async {
-                        print(value);
+                        print("value $value");
                         if (value) {
                           Navigator.pushReplacement(
                             context,
