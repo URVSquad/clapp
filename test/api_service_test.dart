@@ -5,7 +5,6 @@ void main() {
 
   test('Get event', () {
     final apiService = APIService();
-    var response = apiService.getActivities();
-    expect(response, completion(equals(true)));
+    var response = apiService.getActivitiesByCategory("Category 1");
   });
 }

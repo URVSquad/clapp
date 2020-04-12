@@ -21,6 +21,13 @@ class APIService {
     return list;
   }
 
+  Future<ListActivities> getActivitiesByCategory(String categoryName) async {
+    var url = rootUrl + "/activities/category?category="+categoryName;
+    var response = await http.get(url);
+    ListActivities list = ListActivities.fromJson(jsonDecode(response.body));
+    return list;
+  }
+
 
   Future<String> postActivity(Activity activity) async {
     var url = rootUrl + "/activities";
@@ -36,6 +43,13 @@ class APIService {
 
   Future<ListEvents> getEvents() async {
     var url = rootUrl + "/events";
+    var response = await http.get(url);
+    ListEvents list = ListEvents.fromJson(jsonDecode(response.body));
+    return list;
+  }
+
+  Future<ListEvents> getEventsByCategory(String categoryName) async {
+    var url = rootUrl + "/events/category?category="+categoryName;
     var response = await http.get(url);
     ListEvents list = ListEvents.fromJson(jsonDecode(response.body));
     return list;
