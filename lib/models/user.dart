@@ -30,12 +30,12 @@ class User {
         user.sub = attribute.getValue();
       } else if (attribute.getName() == 'website') {
         user.website = attribute.getValue();
-      } else if (attribute.getName() == 'nig') { //FIXME: Mistake in the userpool, should be nif
+      } else if (attribute.getName() == 'custom:nif') {
         user.nif = attribute.getValue();
-      } else if (attribute.getName() == 'description') {
+      } else if (attribute.getName() == 'custom:description') {
         user.description = attribute.getValue();
-      } else if (attribute.getName() == 'is_enterprise') {
-        if(int.tryParse(attribute.getValue()) == 1){
+      } else if (attribute.getName() == 'custom:enterprise') {
+        if(attribute.getValue() == "1"){
           user.is_enterprise = true;
         } else{
           user.is_enterprise = false;
