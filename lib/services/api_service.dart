@@ -7,8 +7,6 @@ import 'package:betogether/services/cognito_service.dart';
 import 'package:betogether/services/pools_vars.dart' as global;
 import 'package:http/http.dart' as http;
 
-// TODO proteger maybe
-// TODO handle not internet
 const rootUrl = "https://edrxliv83i.execute-api.eu-west-2.amazonaws.com/dev";
 
 class APIService {
@@ -30,7 +28,7 @@ class APIService {
   }
     
   Future<ListActivities> getActivitiesByCategory(String categoryName) async {
-    var url = rootUrl + "/activities/category?category=Category 1";
+    var url = rootUrl + "/activities/category?category="+categoryName;
     var response = await http.get(url);
     ListActivities list = ListActivities.fromJson(jsonDecode(response.body));
     return list;
@@ -40,13 +38,17 @@ class APIService {
   Future<String> postActivity(Activity activity) async {
     var url = rootUrl + "/activities";
     var payload = activity.toJson();
-
     var response = await http.post(url,
         headers: {'auth': buildAuthenticationHeader()},
         body: payload
     );
-
     return response.body;
+  }
+
+  Future<int> likeItem(int id) async {
+    var url = rootUrl + "/items/"+id.toString()+"/votes";
+    await http.post(url);
+    return 0;
   }
 
   Future<ListEvents> getEvents() async {
@@ -63,7 +65,7 @@ class APIService {
     return list;
 }
   Future<ListEvents> getEventsByCategory(String categoryName) async {
-    var url = rootUrl + "/events/category?category=Category 1";
+    var url = rootUrl + "/events/category?category="+categoryName;
     var response = await http.get(url);
     ListEvents list = ListEvents.fromJson(jsonDecode(response.body));
     return list;

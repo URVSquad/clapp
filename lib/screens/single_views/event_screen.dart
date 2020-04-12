@@ -1,6 +1,7 @@
 import 'package:betogether/main.dart';
 import 'package:betogether/models/activity.dart';
 import 'package:betogether/models/event.dart';
+import 'package:betogether/services/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -13,9 +14,8 @@ class EventScreen extends StatefulWidget {
 }
 
 class _EventScreenState extends State<EventScreen> {
-
   final Event event;
-
+  Color _color = Colors.black;
 
   _EventScreenState(this.event) : super();
 
@@ -97,11 +97,20 @@ class _EventScreenState extends State<EventScreen> {
                           ),
                         ),
                         FlatButton(
-                          onPressed: () => {},
+                          onPressed: () {
+                              APIService api = new APIService();
+                              setState(() {
+                              _color = Colors.red;
+                              });
+                              api.likeItem(event.id);
+                          },
                           child: new Column(
                             children: <Widget>[
-                              new Icon(Icons.favorite_border),
-                              new Text('Favorito')
+                              new Icon(
+                                  Icons.favorite,
+                                  color: _color,
+                              ),
+                              new Text('Me gusta')
                             ],
                           ),
                         ),
