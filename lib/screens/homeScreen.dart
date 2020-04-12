@@ -1,11 +1,12 @@
 import 'package:betogether/models/listActivities.dart';
 import 'package:betogether/models/listEvents.dart';
-import 'package:betogether/screens/listActivitiesScreen.dart';
-import 'package:betogether/screens/listEventsScreen.dart';
 import 'package:betogether/services/api_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
+
+import 'list_screens/listActivitiesScreen.dart';
+import 'list_screens/listEventsScreen.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen() : super();

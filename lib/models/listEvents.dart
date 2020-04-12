@@ -28,4 +28,9 @@ class ListEvents{
   int getLength (){
     return list.length;
   }
+
+  bool isEmpty(){
+    if (getLength() == 0) return true;
+    else return false;
+  }
 }
