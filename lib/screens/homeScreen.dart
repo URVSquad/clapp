@@ -1,11 +1,12 @@
 import 'package:betogether/models/listActivities.dart';
 import 'package:betogether/models/listEvents.dart';
-import 'package:betogether/screens/listActivitiesScreen.dart';
-import 'package:betogether/screens/listEventsScreen.dart';
 import 'package:betogether/services/api_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
+
+import 'list_screens/listActivitiesScreen.dart';
+import 'list_screens/listEventsScreen.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen() : super();
@@ -125,12 +126,11 @@ class _HomeScreenState extends State<HomeScreen>
       children: <Widget>[
         event("Top semanal",  "🔝", "0xfffff3e0", "¿Ready para petarlo?"),
         event("Ejercicio", "🤸‍️","0xfffbfbe9e7", "💪 ¡no te muevas solo!"),
-        event("Cocinitas", "👨‍🍳", "0xffefebe9", "Preparate para hacer feliz a tu familia con estos platazos!"),
         event("Cultura", "📚", "0xffe8eaf6", "Self love club 📚"),
+        event("Otros", "📚", "0xffe8eaf6", "Planazos de otro mundo 🚀"),
         event("Peques", "🐥", "0xffeffebee", "Planazos a pequeña escala. 👻"),
-        event("Party time", "🍹", "0xfff9fbe7",
+        event("Fiesta", "🍹", "0xfff9fbe7",
             "¡La vida hay que celebrarla! desde casa. 🏡"),
-        event("Otros", "⚡", "0xffede7f6", "Planazos de otro mundo 🚀  "),
       ],
     );
   }

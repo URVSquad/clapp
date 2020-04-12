@@ -24,6 +24,7 @@ dependencies:
   http: "0.12.0+4"
   flutter_launcher_icons: "^0.7.3"
   modal_progress_hud: ^0.1.3
+  url_launcher: ^5.4.2
 
 flutter_icons:
   android: true
@@ -40,6 +41,7 @@ flutter:
   assets:
     - assets/img/deportes.jpg
     - assets/img/yoga.jpg
+    - assets/img/imageNotFound.jpg
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
