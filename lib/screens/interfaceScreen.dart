@@ -1,17 +1,15 @@
-import 'package:betogether/models/user.dart';
-import 'package:betogether/screens/user/confirmation_screen.dart';
+import 'package:amazon_cognito_identity_dart_2/src/cognito_user_pool.dart';
 import 'package:betogether/screens/user/profileScreen.dart';
-import 'package:betogether/screens/user/signup_screen.dart';
 import 'package:betogether/screens/user/singup_login_screen.dart';
 import 'package:betogether/services/cognito_service.dart';
-import 'package:amazon_cognito_identity_dart_2/src/cognito_user_pool.dart';
+import 'package:betogether/services/pools_vars.dart' as global;
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+
 import '../main.dart';
-import 'addScreen.dart';
+import 'add/addScreen.dart';
 import 'homeScreen.dart';
-import 'listScreen.dart';
-import 'package:betogether/services/pools_vars.dart' as global;
+
 
 
 class InterfacePage extends StatefulWidget {
@@ -44,13 +42,12 @@ class _InterfacePageState extends State<InterfacePage> {
   Widget build(BuildContext context) {
     return new Scaffold(
       body: DefaultTabController(
-        length: 4,
+        length: 3,
         child: new Scaffold(
           body: TabBarView(
             physics: NeverScrollableScrollPhysics(),
             children: [
               new HomeScreen(),
-              new ListScreen(),
               new AddScreen(),
               new SignupLoginScreen()
             ],
@@ -59,9 +56,6 @@ class _InterfacePageState extends State<InterfacePage> {
             tabs: [
               Tab(
                 icon: new Icon(Icons.home),
-              ),
-              Tab(
-                icon: new Icon(Icons.list),
               ),
               Tab(
                 icon: new Icon(Icons.add),
@@ -78,7 +72,7 @@ class _InterfacePageState extends State<InterfacePage> {
   }
 
 
-  Widget open_profile_screen(BuildContext context){
+  Widget openProfileScreen(BuildContext context){
     return new FutureBuilder(
       future: _getValues(),
       builder: (context, AsyncSnapshot<UserService> snapshot) {
