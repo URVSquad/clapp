@@ -69,7 +69,7 @@ class APIService {
 
   Future<int> postEvent(Event event) async {
     await _userService.init();
-    var url = rootUrl + "/activities";
+    var url = rootUrl + "/events";
     var payload = event.toJson();
 
     var auth = await buildAuthenticationHeader();
