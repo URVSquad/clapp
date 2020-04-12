@@ -161,7 +161,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             title: new TextFormField(
                               initialValue: widget.email,
                               decoration: new InputDecoration(
-                                  labelText: 'Nombre de usuario o correo'),
+                                  labelText: 'Correo electrónico'),
                               keyboardType: TextInputType.emailAddress,
                               validator: (String text){
                                 if(text.isEmpty){

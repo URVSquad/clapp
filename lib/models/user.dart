@@ -30,11 +30,11 @@ class User {
         user.sub = attribute.getValue();
       } else if (attribute.getName() == 'website') {
         user.website = attribute.getValue();
-      } else if (attribute.getName() == 'nig') { //FIXME: Mistake in the userpool, should be nif
+      } else if (attribute.getName() == 'nif') {
         user.nif = attribute.getValue();
       } else if (attribute.getName() == 'description') {
         user.description = attribute.getValue();
-      } else if (attribute.getName() == 'is_enterprise') {
+      } else if (attribute.getName() == 'enterprise') {
         if(int.tryParse(attribute.getValue()) == 1){
           user.is_enterprise = true;
         } else{

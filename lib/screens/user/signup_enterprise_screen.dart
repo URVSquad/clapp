@@ -11,13 +11,13 @@ import '../../main.dart';
 import '../validators.dart' as validator;
 import 'confirmation_screen.dart';
 
-class SignUpScreen extends StatefulWidget {
+class SignUpEnterpriseScreen extends StatefulWidget {
 
   @override
-  _SignUpScreenState createState() => new _SignUpScreenState();
+  _SignUpEnterpriseScreenState createState() => new _SignUpEnterpriseScreenState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> {
+class _SignUpEnterpriseScreenState extends State<SignUpEnterpriseScreen> {
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
   String confirmationCode;
   User _user = new User();
@@ -31,11 +31,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
     if (_formKey.currentState.validate()){
       print('Validated');
       _formKey.currentState.save();
+      _user.is_enterprise = true;
 
       String message;
       bool signUpSuccess = false;
       try {
-        _user = await _userService.signUp(_user.username, _user.password, _user.name, _user.email);
+        _user = await _userService.signUp(_user.email, _user.password, _user.name, _user.email, website:_user.website, description:_user.description, nif:_user.nif, is_enterprise:_user.is_enterprise);
         signUpSuccess = true;
         message = 'Cuenta creada correctamente. Verifica tu cuenta para empezar a usarla.';
       } on CognitoClientException catch (e) {
@@ -118,24 +119,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     child: new ListTile(
                       leading: new Container(
                         padding: EdgeInsets.only(top:5),
-                        child: const Icon(Icons.alternate_email, size: 30, color: Colors.black, ),
-                      ),
-
-                      title: new TextFormField(
-                        decoration: new InputDecoration(labelText: 'Nombre de usuario'),
-                        keyboardType: TextInputType.text,
-                        validator: validator.validateUsername,
-                        onSaved: (String username) {
-                          _user.username = username;
-                        },
-                      ),
-                    ),
-                  ),
-                  new Container(
-                    height: 85,
-                    child: new ListTile(
-                      leading: new Container(
-                        padding: EdgeInsets.only(top:5),
                         child: const Icon(Icons.email, size: 30, color: Colors.black, ),
                       ),
 
@@ -162,8 +145,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         decoration: new InputDecoration(
                             hintText: 'tudominio.com', labelText: 'Página web'),
                         keyboardType: TextInputType.text,
-                        onSaved: (String email) {
-                          _user.email = email;
+                        onSaved: (String website) {
+                          _user.website = website;
                         },
                       ),
                     ),
@@ -180,9 +163,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         decoration: new InputDecoration(
                             hintText: 'Descripción de la empresa', labelText: 'Descripcion'),
                         keyboardType: TextInputType.text,
-                        validator: validator.validateEmail,
-                        onSaved: (String email) {
-                          _user.email = email;
+                        onSaved: (String description) {
+                          _user.description = description;
                         },
                       ),
                     ),
@@ -199,9 +181,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         decoration: new InputDecoration(
                             hintText: 'X0000000X', labelText: 'NIF'),
                         keyboardType: TextInputType.text,
-                        validator: validator.validateEmail,
-                        onSaved: (String email) {
-                          _user.email = email;
+                        onSaved: (String nif) {
+                          _user.nif = nif;
                         },
                       ),
                     ),

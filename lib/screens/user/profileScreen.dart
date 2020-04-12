@@ -126,8 +126,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             );
           }
-          return Center(
-            child: new CircularProgressIndicator(),
+          return new Scaffold(
+            body: new Text('Loading'),
           );
         });
   }

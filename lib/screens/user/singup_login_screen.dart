@@ -3,6 +3,7 @@ import 'dart:async';
 
 import 'package:betogether/main.dart';
 import 'package:betogether/screens/user/profileScreen.dart';
+import 'package:betogether/screens/user/signup_enterprise_screen.dart';
 import 'package:betogether/screens/user/signup_screen.dart';
 import 'package:betogether/services/cognito_service.dart';
 import 'package:flushbar/flushbar.dart';
@@ -96,6 +97,22 @@ class _SignupLoginScreenState extends State<SignupLoginScreen> {
                           },
                         ),
                       ),
+                      new Container(
+                        margin: EdgeInsets.only(top: 20),
+                        child: new Center(
+                          child: new GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                new MaterialPageRoute(
+                                    builder: (context) =>
+                                    new SignUpEnterpriseScreen()),
+                              );
+                            },
+                            child: new Text("Soy una empresa", style: new TextStyle(color: primaryColorDark, decoration: TextDecoration.underline),),
+                          ),
+                        ),
+                      )
                     ],
                   ),
                 )
@@ -107,7 +124,6 @@ class _SignupLoginScreenState extends State<SignupLoginScreen> {
             backgroundColor: Colors.white,
             body: Center(
               child: new CircularProgressIndicator(
-
                 backgroundColor: Colors.white,
 
               ),

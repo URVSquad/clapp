@@ -35,7 +35,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       String message;
       bool signUpSuccess = false;
       try {
-        _user = await _userService.signUp(_user.username, _user.password, _user.name, _user.email);
+        _user = await _userService.signUp(_user.email, _user.password, _user.name, _user.email);
         signUpSuccess = true;
         message = 'Cuenta creada correctamente. Verifica tu cuenta para empezar a usarla.';
       } on CognitoClientException catch (e) {
@@ -110,24 +110,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         validator: validator.validateName,
                         onSaved: (String name) {
                           _user.name = name;
-                        },
-                      ),
-                    ),
-                  ),
-                  new Container(
-                    height: 85,
-                    child: new ListTile(
-                      leading: new Container(
-                        padding: EdgeInsets.only(top:5),
-                        child: const Icon(Icons.alternate_email, size: 30, color: Colors.black, ),
-                      ),
-
-                      title: new TextFormField(
-                        decoration: new InputDecoration(labelText: 'Nombre de usuario'),
-                        keyboardType: TextInputType.text,
-                        validator: validator.validateUsername,
-                        onSaved: (String username) {
-                          _user.username = username;
                         },
                       ),
                     ),

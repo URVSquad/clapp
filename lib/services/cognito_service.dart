@@ -114,12 +114,33 @@ class UserService {
   }
 
   /// Sign up new user
-  Future<User> signUp(String username, String password, String name, String email) async {
+  Future<User> signUp(String username, String password, String name, String email, {String website:'', String description:'', String nif:'', bool is_enterprise:false}) async {
     CognitoUserPoolData data;
     final userAttributes = [
       new AttributeArg(name: 'name', value: name),
       new AttributeArg(name: 'email', value: email),
     ];
+    print(website);
+    if (website != ''){
+      print(website);
+      userAttributes.add(AttributeArg(name: 'website', value: website));
+    }
+    if (description != ''){
+      userAttributes.add(AttributeArg(name: 'custom:description', value: description));
+    }
+    if (nif != ''){
+      print(nif);
+      userAttributes.add(AttributeArg(name: 'custom:nif', value: nif));
+    }
+    if (is_enterprise == true){
+      if (is_enterprise){
+        userAttributes.add(AttributeArg(name: 'custom:enterprise', value: "1"));
+      }
+      else{
+        userAttributes.add(AttributeArg(name: 'custom:enterprise', value: "0"));
+      }
+
+    }
     data =
     await _userPool.signUp(username, password, userAttributes: userAttributes);
 
