@@ -21,8 +21,16 @@ class APIService {
     return list;
   }
 
+
   Future<ListActivities> getActivitiesByUser(String user_id) async {
     var url = rootUrl + "/activities/user?user=$user_id";
+    var response = await http.get(url);
+    ListActivities list = ListActivities.fromJson(jsonDecode(response.body));
+    return list;
+  }
+    
+  Future<ListActivities> getActivitiesByCategory(String categoryName) async {
+    var url = rootUrl + "/activities/category?category="+categoryName;
     var response = await http.get(url);
     ListActivities list = ListActivities.fromJson(jsonDecode(response.body));
     return list;
@@ -50,6 +58,12 @@ class APIService {
 
   Future<ListEvents> getEventsByUser(String user_id) async {
     var url = rootUrl + "/events/user?user=$user_id";
+    var response = await http.get(url);
+    ListEvents list = ListEvents.fromJson(jsonDecode(response.body));
+    return list;
+}
+  Future<ListEvents> getEventsByCategory(String categoryName) async {
+    var url = rootUrl + "/events/category?category="+categoryName;
     var response = await http.get(url);
     ListEvents list = ListEvents.fromJson(jsonDecode(response.body));
     return list;
