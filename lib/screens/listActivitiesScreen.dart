@@ -84,13 +84,14 @@ class _ListActivitiesScreenState extends State<ListActivitiesScreen> {
         fit: BoxFit.cover,
       ));
 
-  final card = Container(
-    height: 124.0,
-    decoration: new BoxDecoration(
-      color: new Color(0xfffbfbe9e7),
-      //FIXME: This should be with the class color
-      shape: BoxShape.rectangle,
-      borderRadius: new BorderRadius.circular(8.0),
+  Container getCard(color){
+    return Container(
+      height: 124.0,
+      decoration: new BoxDecoration(
+          color: new Color(int.parse(color)),
+          //FIXME: This should be with the class color
+          shape: BoxShape.rectangle,
+          borderRadius: new BorderRadius.circular(8.0),
       boxShadow: [
         BoxShadow(
           blurRadius: 4.0, // has the effect of softening the shadow
@@ -103,7 +104,9 @@ class _ListActivitiesScreenState extends State<ListActivitiesScreen> {
         )
       ],
     ),
-  );
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -146,7 +149,7 @@ class _ListActivitiesScreenState extends State<ListActivitiesScreen> {
                       );
                     },
                     child: new Stack(
-                      children: <Widget>[card, image, cardContent(activity)],
+                      children: <Widget>[getCard(color), image, cardContent(activity)],
                     ));
               },
             ),

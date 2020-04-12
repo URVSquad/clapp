@@ -5,12 +5,9 @@ import 'package:betogether/services/cognito_service.dart';
 import 'package:betogether/services/pools_vars.dart' as global;
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
-
 import '../main.dart';
 import 'add/addScreen.dart';
 import 'homeScreen.dart';
-
-
 
 class InterfacePage extends StatefulWidget {
   InterfacePage({Key key, this.title, this.flushbar}) : super(key: key);
