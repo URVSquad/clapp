@@ -141,7 +141,7 @@ class _EventScreenState extends State<EventScreen> {
                 ),
                 new Row(
                   children: <Widget>[
-                    Text("Start date: ",
+                    Text("Inicio: ",
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold
@@ -154,12 +154,12 @@ class _EventScreenState extends State<EventScreen> {
                 ),
                 new Row(
                   children: <Widget>[
-                    Text("End date: ",
+                    Text("Final: ",
                       style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold
                       ),),
-                    Text(printDate(event.start),
+                    Text(printDate(event.end),
                       style: TextStyle(
                           fontSize: 20
                       ),),

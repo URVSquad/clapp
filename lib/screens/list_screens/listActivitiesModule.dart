@@ -35,7 +35,7 @@ class _ListActivitiesModuleState extends State<ListActivitiesModule> {
               child: Text(
                 activity.title,
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: 16,
                 ),
               ),
             ),
