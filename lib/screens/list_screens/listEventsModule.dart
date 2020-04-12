@@ -1,38 +1,26 @@
-import 'package:betogether/models/activity.dart';
 import 'package:betogether/models/event.dart';
-import 'package:betogether/models/listActivities.dart';
 import 'package:betogether/models/listEvents.dart';
-import 'package:betogether/screens/single_views/activity_screen.dart';
 import 'package:betogether/screens/single_views/event_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class ListEventsScreen extends StatefulWidget {
+class ListEventsModule extends StatefulWidget {
   final ListEvents list;
-  final String title;
   final String claim;
   final String color;
-
-  ListEventsScreen(this.list, this.title, this.claim, this.color) : super();
+  ListEventsModule(this.list, this.claim, this.color) : super();
 
   @override
-  _ListEventsScreenState createState() =>
-      _ListEventsScreenState(this.list, this.title, this.claim, this.color);
+  _ListActivitiesModuleState createState() =>
+      _ListActivitiesModuleState(this.list, this.claim, this.color);
 }
-
-class _ListEventsScreenState extends State<ListEventsScreen> {
+class _ListActivitiesModuleState extends State<ListEventsModule> {
   final ListEvents list;
-  final String title;
   final String claim;
   final String color;
 
-  _ListEventsScreenState(this.list, this.title, this.claim, this.color)
+  _ListActivitiesModuleState(this.list, this.claim, this.color)
       : super();
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   String printDate(DateTime date) {
     String print = date.month.toString() +
@@ -139,58 +127,49 @@ class _ListEventsScreenState extends State<ListEventsScreen> {
     );
   }
 
-  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Color(int.parse(color)),
-          title: Text(
-            title,
-            style: TextStyle(fontWeight: FontWeight.normal),
+    return ListView(
+      children: <Widget>[
+        Container(
+          height: 50.0,
+          margin: new EdgeInsets.fromLTRB(20, 20, 20, 0),
+          child: Text(
+            claim,
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 20),
           ),
         ),
-        body: new ListView(
-          children: <Widget>[
-            Container(
-              height: 50.0,
-              margin: new EdgeInsets.fromLTRB(20, 20, 20, 0),
-              child: Text(
-                claim,
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 20),
-              ),
-            ),
-            ListView.separated(
-              shrinkWrap: true,
-              physics: ClampingScrollPhysics(),
-              separatorBuilder: (BuildContext context, int index) => Divider(
-                color: Colors.white,
-              ),
-              padding: EdgeInsets.all(20),
-              itemCount: list.getLength(),
-              itemBuilder: (BuildContext context, int index) {
-                //vars
-                Event event = list.getEvent(index);
-                return GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => EventScreen(
-                                  event: event,
-                                )),
-                      );
-                    },
-                    child: new Stack(
-                      children: <Widget>[
-                        getCard(color),
-                        image,
-                        cardContent(event)
-                      ],
-                    ));
-              },
-            ),
-          ],
-        ));
+        ListView.separated(
+          shrinkWrap: true,
+          physics: ClampingScrollPhysics(),
+          separatorBuilder: (BuildContext context, int index) => Divider(
+            color: Colors.white,
+          ),
+          padding: EdgeInsets.all(20),
+          itemCount: list.getLength(),
+          itemBuilder: (BuildContext context, int index) {
+            //vars
+            Event event = list.getEvent(index);
+            return GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => EventScreen(
+                          event: event,
+                        )),
+                  );
+                },
+                child: new Stack(
+                  children: <Widget>[
+                    getCard(color),
+                    image,
+                    cardContent(event)
+                  ],
+                ));
+          },
+        ),
+      ],
+    );
   }
 }

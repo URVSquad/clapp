@@ -1,7 +1,7 @@
 import 'package:betogether/models/listActivities.dart';
 import 'package:betogether/models/listEvents.dart';
-import 'package:betogether/screens/listActivitiesScreen.dart';
-import 'package:betogether/screens/listEventsScreen.dart';
+import 'file:///C:/Users/jeron/linux/betogether/lib/screens/list_screens/listActivitiesScreen.dart';
+import 'file:///C:/Users/jeron/linux/betogether/lib/screens/list_screens/listEventsScreen.dart';
 import 'package:betogether/services/api_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
