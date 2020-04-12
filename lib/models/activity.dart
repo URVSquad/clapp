@@ -12,7 +12,7 @@ class Activity{
   int votes;
 
   Activity({this.id, this.title, this.image, this.description,
-    this.category, this.date, this.votes});
+    this.category, this.url, this.hashtag, this.date, this.votes});
 
   factory Activity.fromJson(Map<String, dynamic> parsedJson){
     return Activity(

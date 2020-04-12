@@ -389,21 +389,24 @@ class _NewItemScreenState extends State<NewItemScreen> {
                         onPressed: () {
                           if (validate()) {
 
-                            if(widget.event) _newItem = new Event();
-                            else _newItem = new Activity();
-
-                            _newItem.title = _title;
-                            _newItem.description = _description;
-                            _newItem.url = _url;
-                            _newItem.hashtag = _hashtag;
-                            _newItem.category = _category.toString();
-                            _newItem.image = _base64image;
-
-                            if(widget.event) {
-                              _newItem.duration = _duration;
-                              _newItem.start = _startDate.toString() +
-                                  _startTime.toString(); //TODO formato???
-                            }
+                            if(widget.event)
+                              _newItem = new Event(
+                                title: _title,
+                                description: _description,
+                                url: _url,
+                                hashtag: _hashtag,
+                                category: _category.toString(),
+                                image: _base64image,
+                                start: _startDate.toString() + _startTime.toString(), //TODO formato???
+                               duration: _duration
+                              );
+                            else _newItem = new Activity(title: _title,
+                              description: _description,
+                              url: _url,
+                              hashtag: _hashtag,
+                              category: _category.toString(),
+                              image: _base64image
+                            );
 
                             sendItem ();
                             Navigator.pushReplacement(
