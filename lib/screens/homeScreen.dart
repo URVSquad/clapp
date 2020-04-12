@@ -35,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen>
           });
 
           APIService api = new APIService();
-          Future<ListEvents> futureList = api.getEvents();
+          Future<ListEvents> futureList = api.getEventsByCategory(title);
           futureList.then((list) async {
             setState(() {
               _loading = false;
@@ -79,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen>
             _loading = true;
           });
           APIService api = new APIService();
-          Future<ListActivities> futureList = api.getActivities();
+          Future<ListActivities> futureList = api.getActivitiesByCategory(title);
           futureList.then((list) async {
             setState(() {
               _loading = false;
