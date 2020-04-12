@@ -37,6 +37,17 @@ class _ActivityScreenState extends State<ActivityScreen> {
     }
   }
 
+  Image getImage(String image) {
+    if (image == null) {
+      return Image.asset("assets/img/imageNotFound.jpg");
+    } else {
+      return Image.network(
+        image,
+        fit: BoxFit.cover,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,10 +63,8 @@ class _ActivityScreenState extends State<ActivityScreen> {
                 flexibleSpace: Stack(
                   children: <Widget>[
                     Positioned.fill(
-                        child: Image.network(
-                          "https://images.pexels.com/photos/396547/pexels-photo-396547.jpeg?auto=compress&cs=tinysrgb&h=350",
-                          fit: BoxFit.cover,
-                        ))
+                        child: getImage(activity.image)
+                    ),
                   ],
                 ),
               ),
