@@ -5,6 +5,7 @@ import 'package:betogether/services/pools_vars.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:betogether/services/cognito_service.dart';
+import 'package:flutter_launcher_icons/constants.dart';
 import '../../main.dart';
 import '../interfaceScreen.dart';
 import 'newItemScreen.dart';
@@ -42,6 +43,7 @@ class _AddScreenState extends State<AddScreen> {
                     child: Text('Actividad', style: TextStyle(fontSize: 20)),
                     onPressed: () async {
                       UserService _userService = new UserService(userPool);
+                      await _userService.init();
                       if(await _userService.checkAuthenticated()) {
                         Navigator.push(
                           context,
@@ -49,7 +51,7 @@ class _AddScreenState extends State<AddScreen> {
                               builder: (context) => new NewItemScreen(false)),
                         );
                       }else{
-                        Modal().flushbar('Necesitas una cuenta para poder añadir un recurso!').show(context);
+                        Modal().flushbar('Necesitas una cuenta para poder añadir un recurso!', type: 'error').show(context);
                         /*Navigator.push(
                             context,
                             new MaterialPageRoute(
@@ -65,6 +67,7 @@ class _AddScreenState extends State<AddScreen> {
                     child: Text('Evento', style: TextStyle(fontSize: 20)),
                     onPressed: () async {
                       UserService _userService = new UserService(userPool);
+                      await _userService.init();
                       if(await _userService.checkAuthenticated()) {
                         Navigator.push(
                           context,
@@ -72,7 +75,7 @@ class _AddScreenState extends State<AddScreen> {
                             builder: (context) => new NewItemScreen(true)),
                         );
                       }else{
-                        Modal().flushbar('Neceistas una cuenta para poder añadir un recurso!').show(context);
+                        Modal().flushbar('Neceistas una cuenta para poder añadir un recurso!', type: 'error').show(context);
                         /*Navigator.push(
                             context,
                             new MaterialPageRoute(

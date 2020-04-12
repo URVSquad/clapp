@@ -5,6 +5,8 @@ import 'package:betogether/models/event.dart';
 import 'package:betogether/models/categories.dart';
 import 'package:betogether/screens/add/addScreen.dart';
 import 'package:betogether/screens/modals/flushbar_modal.dart';
+import 'package:betogether/services/cognito_service.dart';
+import 'package:betogether/services/pools_vars.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_duration_picker/flutter_duration_picker.dart';
@@ -16,6 +18,7 @@ import '../interfaceScreen.dart';
 
 class NewItemScreen extends StatefulWidget {
   bool event;
+
   NewItemScreen(this.event) : super();
 
   @override
@@ -23,7 +26,6 @@ class NewItemScreen extends StatefulWidget {
 }
 
 class _NewItemScreenState extends State<NewItemScreen> {
-
   final _formKey = GlobalKey<FormState>();
 
   var _dateColor = Colors.black12;
@@ -35,62 +37,57 @@ class _NewItemScreenState extends State<NewItemScreen> {
   Text _timeButtonText = Text("Seleccionar hora");
   Text _durationButtonText = Text("Seleccionar duración");
 
-  String _title;
-  String _url;
-  String _description;
-  String _hashtag;
+  String _title = "";
+  String _url = "";
+  String _description = "";
+  String _hashtag = "";
   var _category;
   TimeOfDay _startTime;
   DateTime _startDate;
   int _duration = 0;
   File _imageFile;
-  String _base64image;
+  String _base64image = "";
 
   var _newItem;
 
-  Widget showCategories(){
-    if(widget.event) {
+  Widget showCategories() {
+    if (widget.event) {
       return DropdownButtonFormField<eventCategories>(
-          decoration: InputDecoration(
-            labelText: 'Categoría'),
-          isExpanded: true,
-          value: _category,
-          icon: Icon(Icons.arrow_drop_down),
-          onChanged: (newValue) {
-            setState(() {
-              _category = newValue;
-            });
-          },
-          items: eventCategories.values.map((eventCategories category) {
-            return DropdownMenuItem<eventCategories>(
-                value: category,
-                child: Text(category.toString().split('.').last)
-            );
-          }).toList(),
-        validator: (eventCategories cat){
+        decoration: InputDecoration(labelText: 'Categoría'),
+        isExpanded: true,
+        value: _category,
+        icon: Icon(Icons.arrow_drop_down),
+        onChanged: (newValue) {
+          setState(() {
+            _category = newValue;
+          });
+        },
+        items: eventCategories.values.map((eventCategories category) {
+          return DropdownMenuItem<eventCategories>(
+              value: category,
+              child: Text(category.toString().split('.').last));
+        }).toList(),
+        validator: (eventCategories cat) {
           return cat == null ? 'Tienes que elegir una categoría!' : null;
         },
       );
-    }
-    else{
+    } else {
       return DropdownButtonFormField<activityCategories>(
-          decoration: InputDecoration(
-              labelText: 'Categoría'),
-          isExpanded: true,
-          value: _category,
-          icon: Icon(Icons.arrow_drop_down),
-          onChanged: (newValue) {
-            setState(() {
-              _category = newValue;
-            });
-          },
-          items: activityCategories.values.map((activityCategories category) {
-            return DropdownMenuItem<activityCategories>(
-                value: category,
-                child: Text(category.toString().split('.').last)
-            );
-          }).toList(),
-        validator: (activityCategories cat){
+        decoration: InputDecoration(labelText: 'Categoría'),
+        isExpanded: true,
+        value: _category,
+        icon: Icon(Icons.arrow_drop_down),
+        onChanged: (newValue) {
+          setState(() {
+            _category = newValue;
+          });
+        },
+        items: activityCategories.values.map((activityCategories category) {
+          return DropdownMenuItem<activityCategories>(
+              value: category,
+              child: Text(category.toString().split('.').last));
+        }).toList(),
+        validator: (activityCategories cat) {
           return cat == null ? 'Tienes que elegir una categoría!' : null;
         },
       );
@@ -101,26 +98,29 @@ class _NewItemScreenState extends State<NewItemScreen> {
     _imageFile = await ImagePicker.pickImage(source: ImageSource.gallery);
   }
 
-  Widget showImage(BuildContext context){
-      if(_imageFile==null){
-        return Text("No se ha seleccionado ninguna imagen");
-      }
-      else{
-        return Image.file(_imageFile, height: 200, width: 200,);
-      }
+  Widget showImage(BuildContext context) {
+    if (_imageFile == null) {
+      return Text("No se ha seleccionado ninguna imagen");
+    } else {
+      return Image.file(
+        _imageFile,
+        height: 200,
+        width: 200,
+      );
+    }
   }
 
   Future<Null> selectDate(BuildContext context) async {
     DateTime _now = DateTime.now();
     final DateTime picked = await showDatePicker(
-      locale : const Locale('es'),
+      locale: const Locale('es'),
       context: context,
       initialDate: _now,
       firstDate: _now,
       lastDate: _now.add(new Duration(days: 365)),
     );
 
-    if(picked != null) {
+    if (picked != null) {
       setState(() {
         _startDate = picked;
         _dateButtonText = Text(DateFormat('dd-MM-yyyy').format(_startDate));
@@ -135,7 +135,7 @@ class _NewItemScreenState extends State<NewItemScreen> {
       initialTime: _now,
     );
 
-    if(picked != null) {
+    if (picked != null) {
       setState(() {
         _startTime = picked;
         _timeButtonText = Text(_startTime.format(context));
@@ -143,290 +143,275 @@ class _NewItemScreenState extends State<NewItemScreen> {
     }
   }
 
-  Widget eventInfo(){
-    if(widget.event){
+  Widget eventInfo() {
+    if (widget.event) {
       return Container(
-        child: Column(
-          children: <Widget>[
-            ListTile(
-                leading: Icon(Icons.event),
-                title: Text("Día:")
+        child: Column(children: <Widget>[
+          ListTile(leading: Icon(Icons.event), title: Text("Día:")),
+          ListTile(
+            title: OutlineButton(
+              child: _dateButtonText,
+              onPressed: () {
+                selectDate(context);
+              },
+              highlightedBorderColor: Color(0xffc5e1a5),
+              borderSide: BorderSide(color: _dateColor),
             ),
-            ListTile(
-              title: OutlineButton(
-                child: _dateButtonText,
-                onPressed: (){
-                  selectDate(context);
-                },
-                highlightedBorderColor: Color(0xffc5e1a5),
-                borderSide: BorderSide(
-                  color: _dateColor
-                ),
-              ),
+          ),
+          ListTile(leading: Icon(Icons.access_time), title: Text("Hora:")),
+          ListTile(
+            title: OutlineButton(
+              highlightedBorderColor: Color(0xffc5e1a5),
+              child: _timeButtonText,
+              onPressed: () {
+                selectTime(context);
+              },
+              borderSide: BorderSide(color: _timeColor),
             ),
-            ListTile(
-              leading: Icon(Icons.access_time),
-              title: Text("Hora:")
-              ),
-            ListTile(
-              title: OutlineButton(
-                highlightedBorderColor: Color(0xffc5e1a5),
-                child: _timeButtonText,
-                onPressed: (){
-                  selectTime(context);
-                },
-                borderSide: BorderSide(
-                    color: _timeColor
-                ),
-              ),
+          ),
+          ListTile(leading: Icon(Icons.av_timer), title: Text("Duración:")),
+          ListTile(
+            title: OutlineButton(
+              child: _durationButtonText,
+              highlightedBorderColor: Color(0xffc5e1a5),
+              borderSide: BorderSide(color: _durationColor),
+              onPressed: () async {
+                Duration resultingDuration = await showDurationPicker(
+                  context: context,
+                  initialTime: new Duration(minutes: 30),
+                );
+                setState(() {
+                  _durationButtonText = Text(
+                      resultingDuration.inHours.toString() +
+                          'h ' +
+                          ((resultingDuration.inMinutes) % 60).toString() +
+                          'min');
+                  _duration = resultingDuration.inMinutes;
+                });
+              },
             ),
-
-            ListTile(
-                leading: Icon(Icons.av_timer),
-                title: Text("Duración:")
-            ),
-            ListTile(
-              title: OutlineButton(
-                child: _durationButtonText,
-                highlightedBorderColor: Color(0xffc5e1a5),
-                borderSide: BorderSide(
-                    color: _durationColor
-                ),
-                onPressed: () async {
-                  Duration resultingDuration = await  showDurationPicker(
-                    context: context,
-                    initialTime: new Duration(minutes: 30),
-                  );
-                  setState(() {
-                    _durationButtonText = Text(
-                    resultingDuration.inHours.toString()+'h '+((resultingDuration.inMinutes)%60).toString()+'min');
-                    _duration = resultingDuration.inMinutes;
-                  });
-                },
-              ),
-            ),
-          ]
-        ),
+          ),
+        ]),
       );
-    }
-    else return null;
+    } else
+      return null;
   }
 
-  void sendItem() {
-    APIService api = new APIService();
+  Future<bool> sendItem() async {
 
-    if(widget.event) {
-      Future<int> future = api.postEvent(_newItem);
-      future.then((value) async {
-        if (value == 200){
-          print("OK");
-        }
-        else{
-          print("NO OK");
-        }
-      });
-    }
-    else {
-      Future<int> future = api.postActivity(_newItem);
-      future.then((value) async {
-        if (value == 200){
-          print("OK");
-        }
-        else{
-          print("NO OK");
-        }
-      });
+    APIService api = new APIService();
+    UserService _userService = new UserService(userPool);
+    await _userService.init();
+
+    if (await _userService.checkAuthenticated()) {
+      if (widget.event) {
+        Future<int> future = api.postEvent(_newItem);
+        future.then((value) async {
+          if (value == 200) {
+            print("OK");
+            return true;
+          } else {
+            print("NO OK");
+            Modal().flushbar('Error inesperado', type: 'error').show(context);
+            return false;
+          }
+        });
+      } else {
+        Future<int> future = api.postActivity(_newItem);
+        future.then((value) async {
+          if (value == 200) {
+            print("OK");
+            return true;
+          } else {
+            print("NO OK");
+            Modal().flushbar('Error inesperado', type: 'error').show(context);
+            return false;
+          }
+        });
+      }
+    } else {
+      Modal()
+          .flushbar('Error al verificar tu cuenta de usuario!', type: 'error')
+          .show(context);
+      return false;
     }
   }
 
   bool validate() {
     bool val = true;
-    if(widget.event){
+    if (widget.event) {
       if (_startDate == null) {
         _dateColor = Colors.red;
         val = false;
-      }
-      else _dateColor = Colors.black12;
+      } else
+        _dateColor = Colors.black12;
       if (_startTime == null) {
         _timeColor = Colors.red;
         val = false;
-      }
-      else _timeColor = Colors.black12;
+      } else
+        _timeColor = Colors.black12;
       if (_duration == 0) {
         _durationColor = Colors.red;
         val = false;
-      }
-      else _durationColor = Colors.black12;
-      setState(() {
-      });
+      } else
+        _durationColor = Colors.black12;
+      setState(() {});
     }
 
     return _formKey.currentState.validate() && val;
-    }
-
-
+  }
 
   @override
   Widget build(BuildContext context) {
-    if(widget.event){
+    if (widget.event) {
       _titleText = Text("Crear evento");
-    }
-    else {
+    } else {
       _titleText = Text("Crear actividad");
     }
-      return new Scaffold(
-        appBar: AppBar(
-          title: _titleText,
-        ),
-        body: Center(
-          child: Form(
-              key: _formKey,
-              child: ListView(
-                  children: <Widget>[
-                    Container(
-                      child: ListTile(
-                        title: TextFormField(
-                          decoration: InputDecoration(
-                              labelText: 'Título'),
-                          keyboardType: TextInputType.text,
-                          onSaved: (String title) {
-                            setState(() {
-                              _title = title;
-                            });
-                          },
-                          validator: (String value) {
-                            return value.isEmpty ? 'Tienes que introducir un título!' : null;
-                          },
-                        ),
-                      ),
-                    ),
-
-                    Container(
-                      child: ListTile(
-                          title: showCategories()
-                      ),
-                    ),
-
-                    Container(
-                      child: ListTile(
-                        title: TextFormField(
-                          decoration: InputDecoration(
-                              labelText: 'Descripción'),
-                          keyboardType: TextInputType.multiline,
-                          minLines: 3,
-                          maxLines: null,
-                          onSaved: (String desc) {
-                            _description = desc;
-                          },
-                          validator: (String value) {
-                            return value.isEmpty ? 'Tienes que introducir una descripción!' : null;
-                          },
-                        ),
-                      ),
-                    ),
-
-                    Container(
-                      child: ListTile(
-                        title: TextFormField(
-                          decoration: InputDecoration(
-                              labelText: 'Enlace'),
-                          keyboardType: TextInputType.url,
-                          onSaved: (String url) {
-                            _url = url;
-                          },
-                          validator: (String value) {
-                            return value.isEmpty ? 'Tienes que introducir un enlace!' : null;
-                          },
-                        ),
-                      ),
-                    ),
-
-                    Container(
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: <Widget>[
-                              ListTile(
-                                title:OutlineButton(
-                                  child: Text("Selecciona una imagen"),
-                                  onPressed: (){
-                                      selectImage();
-                                      setState((){
-                                        _base64image = base64Encode(_imageFile.readAsBytesSync());
-                                    });
-                                  },
-                                ),
-                              ),
-                              ListTile(
-                                  title: showImage(context)
-                              )
-                            ]
-                        )
-                    ),
-
-                    Container(
-                      child: ListTile(
-                        title: TextFormField(
-                          decoration: InputDecoration(
-                              labelText: 'Hashtag'),
-                          keyboardType: TextInputType.url,
-                          onSaved: (String hashtag) {
-                            _hashtag = hashtag;
-                          },
-                        ),
-                      ),
-                    ),
-
-                    Container(
-                      child: ListTile(
-                        title: eventInfo(),
-                      ),
-                    ),
-
-                    Container(
-                      child: RaisedButton(
-                        child: Text('Enviar'),
-
+    return new Scaffold(
+      appBar: AppBar(
+        title: _titleText,
+      ),
+      body: Center(
+        child: Form(
+            key: _formKey,
+            child: ListView(children: <Widget>[
+              Container(
+                child: ListTile(
+                  title: TextFormField(
+                    decoration: InputDecoration(labelText: 'Título'),
+                    keyboardType: TextInputType.text,
+                    onChanged: (String title) {
+                      setState(() {
+                        _title = title;
+                      });
+                    },
+                    validator: (String value) {
+                      return value.isEmpty
+                          ? 'Tienes que introducir un título!'
+                          : null;
+                    },
+                  ),
+                ),
+              ),
+              Container(
+                child: ListTile(title: showCategories()),
+              ),
+              Container(
+                child: ListTile(
+                  title: TextFormField(
+                    decoration: InputDecoration(labelText: 'Descripción'),
+                    keyboardType: TextInputType.multiline,
+                    minLines: 3,
+                    maxLines: null,
+                    onChanged: (String desc) {
+                      _description = desc;
+                    },
+                    validator: (String value) {
+                      return value.isEmpty
+                          ? 'Tienes que introducir una descripción!'
+                          : null;
+                    },
+                  ),
+                ),
+              ),
+              Container(
+                child: ListTile(
+                  title: TextFormField(
+                    decoration: InputDecoration(labelText: 'Enlace'),
+                    keyboardType: TextInputType.url,
+                    onChanged: (String url) {
+                      _url = url;
+                    },
+                    validator: (String value) {
+                      return value.isEmpty
+                          ? 'Tienes que introducir un enlace!'
+                          : null;
+                    },
+                  ),
+                ),
+              ),
+              Container(
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: <Widget>[
+                    ListTile(
+                      title: OutlineButton(
+                        child: Text("Selecciona una imagen"),
                         onPressed: () {
-                          if (validate()) {
-
-                            if(widget.event)
-                              _newItem = new Event(
-                                title: _title,
-                                description: _description,
-                                url: _url,
-                                hashtag: _hashtag,
-                                category: _category.toString(),
-                                image: _base64image,
-                                start: _startDate, //TODO formato???
-                                end: _startDate
-                              );
-                            else _newItem = new Activity(title: _title,
-                              description: _description,
-                              url: _url,
-                              hashtag: _hashtag,
-                              category: _category.toString(),
-                              image: _base64image
-                            );
-
-                            sendItem ();
-                            Navigator.pushReplacement(
-                              context,
-                              new MaterialPageRoute(
-                                  builder: (context) =>
-                                  new InterfacePage(flushbar: Modal().flushbar("Aportación registrada correctamente!"))),
-                            );
-                          }
-                          else {
-                            Modal().flushbar('Faltan campos por completar!', type: 'error').show(context);
-                          }
-
+                          selectImage();
+                          setState(() {
+                            _base64image =
+                                base64Encode(_imageFile.readAsBytesSync());
+                          });
                         },
                       ),
-                    )
-                  ]
+                    ),
+                    ListTile(title: showImage(context))
+                  ])),
+              Container(
+                child: ListTile(
+                  title: TextFormField(
+                    decoration: InputDecoration(labelText: 'Hashtag'),
+                    keyboardType: TextInputType.url,
+                    onChanged: (String hashtag) {
+                      _hashtag = hashtag;
+                    },
+                  ),
+                ),
+              ),
+              Container(
+                child: ListTile(
+                  title: eventInfo(),
+                ),
+              ),
+              Container(
+                child: RaisedButton(
+                  child: Text('Enviar'),
+                  onPressed: () {
+                    if (validate()) {
+                      if (widget.event)
+                        _newItem = new Event(
+                            title: _title,
+                            description: _description,
+                            url: _url,
+                            hashtag: _hashtag,
+                            category: _category.toString(),
+                            image: _base64image,
+                            start: DateTime(_startDate.year, _startDate.month, _startDate.day, _startTime.hour, _startTime.minute),
+                            end: DateTime(_startDate.year, _startDate.month, _startDate.day, _startTime.hour, _startTime.minute).add(Duration(minutes: _duration))
+                        );
+                      else
+                        _newItem = new Activity(
+                            title: _title,
+                            description: _description,
+                            url: _url,
+                            hashtag: _hashtag,
+                            category: _category.toString(),
+                            image: _base64image);
+
+                      sendItem().then((value) async {
+                        if (value) {
+                          Navigator.pushReplacement(
+                            context,
+                            new MaterialPageRoute(
+                                builder: (context) => new InterfacePage(
+                                    flushbar: Modal().flushbar(
+                                        "Aportación registrada correctamente!"))),
+                          );
+                        }
+                      });
+                    } else {
+                      Modal()
+                          .flushbar('Faltan campos por completar!',
+                              type: 'error')
+                          .show(context);
+                    }
+                  },
+                ),
               )
-          ),
-        ),
-      );
-    }
+            ])),
+      ),
+    );
   }
+}
