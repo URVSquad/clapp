@@ -35,7 +35,7 @@ class User {
       } else if (attribute.getName() == 'custom:description') {
         user.description = attribute.getValue();
       } else if (attribute.getName() == 'custom:enterprise') {
-        if(int.tryParse(attribute.getValue()) == 1){
+        if(attribute.getValue() == "1"){
           user.is_enterprise = true;
         } else{
           user.is_enterprise = false;

@@ -163,6 +163,12 @@ class _SignUpEnterpriseScreenState extends State<SignUpEnterpriseScreen> {
                         decoration: new InputDecoration(
                             hintText: 'Descripción de la empresa', labelText: 'Descripcion'),
                         keyboardType: TextInputType.text,
+                        validator: (String text){
+                          if(text.isEmpty){
+                            return 'Este campo debe tener entre 1 i 500 caracteres';
+                          }
+                          return null;
+                        },
                         onSaved: (String description) {
                           _user.description = description;
                         },
@@ -181,6 +187,12 @@ class _SignUpEnterpriseScreenState extends State<SignUpEnterpriseScreen> {
                         decoration: new InputDecoration(
                             hintText: 'X0000000X', labelText: 'NIF'),
                         keyboardType: TextInputType.text,
+                        validator: (String text){
+                          if(text.isEmpty){
+                            return 'Este texto no correspone a un NIF';
+                          }
+                          return null;
+                        },
                         onSaved: (String nif) {
                           _user.nif = nif;
                         },

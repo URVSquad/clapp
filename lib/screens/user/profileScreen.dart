@@ -6,7 +6,9 @@ import 'package:betogether/models/listActivities.dart';
 import 'package:betogether/models/listEvents.dart';
 import 'package:betogether/models/user.dart';
 import 'package:amazon_cognito_identity_dart_2/src/cognito_client_exceptions.dart';
-import 'package:betogether/screens/listEventsScreen.dart';
+import 'package:betogether/screens/list_screens/listActivitiesModule.dart';
+import 'package:betogether/screens/list_screens/listActivitiesScreen.dart';
+import 'package:betogether/screens/list_screens/listEventsModule.dart';
 import 'package:betogether/screens/modals/flushbar_modal.dart';
 import 'package:betogether/screens/user/signup_screen.dart';
 import 'package:betogether/screens/user/singup_login_screen.dart';
@@ -20,7 +22,6 @@ import 'package:flutter/widgets.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 import '../interfaceScreen.dart';
-import '../listActivitiesScreen.dart';
 import 'login_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -116,9 +117,9 @@ class ProfileScreenState extends State<ProfileScreen>
       Future<User> user = _userService.getCurrentUser();
       user.then((user) async  {
         _user = user;
-        print(user.sub);
+        //print(user.is_enterprise);
         APIService api = new APIService();
-        Future<ListEvents> futureEventsList = api.getEvents(); //user.sub
+        Future<ListEvents> futureEventsList = api.getEventsByUser(user.sub); //user.sub
         futureEventsList.then((list) async {
           setState(() {
             listEvents = list;
@@ -141,133 +142,40 @@ class ProfileScreenState extends State<ProfileScreen>
 
   }
 
-  GestureDetector event(String title, String color, String claim) {
-    return GestureDetector(
-        onTap: () {
-          setState(() {
-            _loading = true;
-          });
-          Future<User> user = _userService.getCurrentUser();
-          user.then((user) async  {
-            APIService api = new APIService();
-            Future<ListEvents> futureList = api.getEventsByUser(user.sub);
-            futureList.then((list) async {
-              setState(() {
-                _loading = false;
-              });
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        ListEventsScreen(list, title, claim, color)),
-              );
-            });
-          });
-        },
-        child: Container(
-          child: Card(
-            elevation: 5,
-            color: Color(int.parse(color)),
-            child: Center(
-              child: Text(
-                title,
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-              ),
-            ),
-          ),
-        ));
-  }
-
-  GestureDetector category(
-      String title, String emoji, String color, String claim) {
-    return GestureDetector(
-        onTap: () {
-          setState(() {
-            _loading = true;
-          });
-          APIService api = new APIService();
-          Future<ListActivities> futureList = api.getActivities();
-          futureList.then((list) async {
-            setState(() {
-              _loading = false;
-            });
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      ListActivitiesScreen(list, title, claim, color)),
-            );
-          });
-        },
-        child: Container(
-          child: Card(
-            color: Color(int.parse(color)),
-            elevation: 5,
-            child: Center(
-              child: new Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text(
-                    title,
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    emoji,
-                    style: TextStyle(fontSize: 30),
-                  )
-                ],
-              ),
-            ),
-          ),
-        ));
-  }
-
-  Widget events() {
-    return GridView.count(
-      padding: const EdgeInsets.all(20),
-      crossAxisSpacing: 20,
-      mainAxisSpacing: 20,
-      crossAxisCount: 1,
-      childAspectRatio: 3,
-      children: <Widget>[
-        event("Top semanal", "0xffffecb3", "¿Ready para petarlo?"),
-        event("Ejercicio", "0xffffecb3", "💪 ¡no te muevas solo!"),
-        event("Cultura", "0xffffecb3", "Self love club 📚"),
-        event("Peques", "0xffffecb3", "Planazos a pequeña escala. 👻"),
-        event("Party time", "0xffffecb3",
-            "¡La vida hay que celebrarla! desde casa. 🏡"),
-        event("Otros", "0xffffecb3", "Planazos de otro mundo 🚀  "),
-      ],
-    );
-  }
-
-  Widget categories() {
-    return GridView.count(
-      padding: const EdgeInsets.all(20),
-      crossAxisSpacing: 20,
-      mainAxisSpacing: 20,
-      crossAxisCount: 2,
-      childAspectRatio: 1.2,
-      children: <Widget>[
-        category(
-            "TOP semanal", "🔝", "0xfffff3e0", "Lo mejor para ti, claro ⚡️📆"),
-        category("Podcast", "🎤", "0xfffbfbe9e7", "Bla Bla Bla 💬"),
-        category(
-            "Ejercicio", "🤸‍️", "0xffefebe9", "Mente sana en body sudado 💦"),
-        category("Recetas", "🍪", "0xffe8eaf6",
-            "El equilibro está en recetas saludables y un cocktail para celebrar lo que te cuidas. 🍹"),
-        category("Audiovisual", "📽", "0xffede7f6",
-            "Junto a la ducha, el mejor momento del día.\nDisfrútalo, te lo mereces. 🎬"),
-        category("Libros", "📚", "0xffe0f2f1", " Libro’s club 📚💭"),
-        category("Juegos", "👾", "0xffeffebee",
-            "💡 ¡Es la hora de jugar! cuidado con los tramposos 👾"),
-        category("Peques", "🐥", "0xfff9fbe7",
-            "Entretener a los peques es un súper poder 🐣"),
-      ],
-    );
-  }
 
   Widget userprofile() {
+    if(_user.is_enterprise == null){
+      return Text('');
+    }
+    else if (_user.is_enterprise){
+      return enterprise();
+    }
+    else{
+      return user();
+    }
+
+  }
+
+  Widget user(){
+    return new Center(
+      child: new Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          new Text("Bienvenidx ${_user.name}", style: title,),
+          new Container(
+            margin: EdgeInsets.all(10),
+          ),
+          new RaisedButton(
+            child: new Text(
+              'Cerrar sesión',
+            ),
+            onPressed: () => logout(context),
+          ),
+        ],
+      ),
+    );
+  }
+  Widget enterprise(){
     return Container(
       margin: EdgeInsets.all(20),
       child: new Column(
@@ -284,18 +192,21 @@ class ProfileScreenState extends State<ProfileScreen>
               child: Text('Visitar página web'),
             ),
           ),
+          new Container(
+            margin: EdgeInsets.all(10),
+          ),
           new Text(_user.description),
-          new Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: <Widget>[
-              new RaisedButton(
-                child: new Text(
-                  'Cerrar sesión',
-                ),
-                onPressed: () => logout(context),
+          new Container(
+            margin: EdgeInsets.all(10),
+          ),
+          new Container(
+            width: double.infinity,
+            child: new RaisedButton(
+              child: new Text(
+                'Cerrar sesión',
               ),
-            ],
+              onPressed: () => logout(context),
+            ),
           )
 
         ],
@@ -303,58 +214,36 @@ class ProfileScreenState extends State<ProfileScreen>
     );
   }
 
-  Widget test_categories(){
-    if (listActivities.list == null){
-      return new Text('No hay data');
+  Widget test_activties(){
+    if (listActivities.list == null || listActivities.getLength() == 0){
+      return no_data();
     }
     else{
-      return ListActivitiesScreen(listActivities, 'hola', 'CLAIM', '0xffe0f2f1');
+      return ListActivitiesModule(listActivities, 'Estas son tu actividades publicadas', '0xfffafafa');
     }
-
   }
 
-
-  Widget user(){
-    if (_user.name == null){
-      return new Text('');
+  Widget test_events(){
+    if (listEvents.list == null || listEvents.getLength() == 0){
+      return no_data();
     }
     else{
-      return Container(
-        margin: EdgeInsets.all(20),
+      return ListEventsModule(listEvents, 'Estos son tus eventos publicados', '0xfffafafa');
+    }
+  }
+
+  Widget no_data(){
+    return new Center(
         child: new Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            new Text(_user.name, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 35),),
-            new Container(
-              width: double.infinity,
-              child: new RaisedButton(
-
-                onPressed: () => {},
-                color: primaryColorDark,
-                child: Text('Visitar página web'),
-              ),
-            ),
-            new Text(_user.description),
-            new Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: <Widget>[
-                new RaisedButton(
-                  child: new Text(
-                    'Cerrar sesión',
-                  ),
-                  onPressed: () => logout(context),
-                ),
-              ],
-            )
-
+            new Text('Parece que no has publicado nada aquí aún', style: TextStyle(fontWeight: FontWeight.bold),),
+            new Text('')
           ],
-        ),
-      );
-    }
-
+        )
+    );
   }
+
   @override
   Widget build(BuildContext context) {
     return ModalProgressHUD(
@@ -374,7 +263,7 @@ class ProfileScreenState extends State<ProfileScreen>
           ),
           body: TabBarView(
             controller: _tabController,
-            children: [user(),test_categories(),test_categories()],
+            children: [userprofile(),test_activties(),test_events()],
           ),
         ));
   }
