@@ -8,19 +8,20 @@ class ListActivitiesModule extends StatefulWidget {
   final ListActivities list;
   final String claim;
   final String color;
+
   ListActivitiesModule(this.list, this.claim, this.color) : super();
 
   @override
   _ListActivitiesModuleState createState() =>
       _ListActivitiesModuleState(this.list, this.claim, this.color);
 }
+
 class _ListActivitiesModuleState extends State<ListActivitiesModule> {
   final ListActivities list;
   final String claim;
   final String color;
 
-  _ListActivitiesModuleState(this.list, this.claim, this.color)
-      : super();
+  _ListActivitiesModuleState(this.list, this.claim, this.color) : super();
 
   Container cardContent(activity) {
     return Container(
@@ -40,43 +41,48 @@ class _ListActivitiesModuleState extends State<ListActivitiesModule> {
             ),
             new Container(height: 10.0),
             new Container(
-                margin: new EdgeInsets.fromLTRB(120, 0, 0, 0),
-                child: FittedBox(
-                  fit: BoxFit.fitWidth,
-                  child: Row(
-                    children: <Widget>[
-                      Icon(
-                        Icons.favorite,
-                        color: Color(0xffb71c1c),
-                        size: 24.0,
-                      ),
-                      Text(
-                        " " + activity.votes.toString(),
-                        textAlign: TextAlign.right,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          color: Color(0xffb71c1c),
-                          fontSize: 18,
-                        ),
-                      )
-                    ],
+              child: Row(
+                children: <Widget>[
+                  Icon(
+                    Icons.favorite,
+                    color: Color(0xffb71c1c),
+                    size: 24.0,
                   ),
-                ))
+                  Text(
+                    " " + activity.votes.toString(),
+                    textAlign: TextAlign.right,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      color: Color(0xffb71c1c),
+                      fontSize: 18,
+                    ),
+                  ),
+                  Container(width: 20,),
+                  Icon(
+                    Icons.business_center,
+                    color: Colors.black,
+                    size: 24.0,
+                  ),
+                ],
+              ),
+            )
           ]),
     );
   }
 
-  Container getImage(String image){
-    if (image==null){
-      return Container(margin: new EdgeInsets.fromLTRB(10, 12.5, 0, 10),
+  Container getImage(String image) {
+    if (image == null) {
+      return Container(
+          margin: new EdgeInsets.fromLTRB(10, 12.5, 0, 10),
           height: 100,
           width: 140,
           child: FittedBox(
             child: Image.asset("assets/img/imageNotFound.jpg"),
             fit: BoxFit.cover,
           ));
-    }else{
-      return Container(margin: new EdgeInsets.fromLTRB(10, 12.5, 0, 10),
+    } else {
+      return Container(
+          margin: new EdgeInsets.fromLTRB(10, 12.5, 0, 10),
           height: 100,
           width: 140,
           child: FittedBox(
@@ -86,7 +92,7 @@ class _ListActivitiesModuleState extends State<ListActivitiesModule> {
     }
   }
 
-  Container getCard(color){
+  Container getCard(color) {
     return Container(
       height: 124.0,
       decoration: new BoxDecoration(
@@ -137,16 +143,20 @@ class _ListActivitiesModuleState extends State<ListActivitiesModule> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => ActivityScreen(
-                          activity: activity,
-                        )),
+                              activity: activity,
+                            )),
                   );
                 },
                 child: new Stack(
-                  children: <Widget>[getCard(color), getImage(activity.image), cardContent(activity)],
+                  children: <Widget>[
+                    getCard(color),
+                    getImage(activity.image),
+                    cardContent(activity)
+                  ],
                 ));
           },
         ),
       ],
-    );;
+    );
   }
 }
