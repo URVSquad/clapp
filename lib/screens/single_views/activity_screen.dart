@@ -1,5 +1,6 @@
 import 'package:betogether/main.dart';
 import 'package:betogether/models/activity.dart';
+import 'package:betogether/services/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -12,9 +13,8 @@ class ActivityScreen extends StatefulWidget {
 }
 
 class _ActivityScreenState extends State<ActivityScreen> {
-
   final Activity activity;
-
+  Color _color = Colors.black;
 
   _ActivityScreenState(this.activity) : super();
 
@@ -85,11 +85,20 @@ class _ActivityScreenState extends State<ActivityScreen> {
                           ),
                         ),
                         FlatButton(
-                          onPressed: () => {},
+                          onPressed: () {
+                            APIService api = new APIService();
+                            setState(() {
+                              _color = Colors.red;
+                            });
+                            api.likeItem(activity.id);
+                          },
                           child: new Column(
                             children: <Widget>[
-                              new Icon(Icons.favorite_border),
-                              new Text('Favorito')
+                              new Icon(
+                                Icons.favorite,
+                                color: _color,
+                              ),
+                              new Text('Me gusta')
                             ],
                           ),
                         ),
