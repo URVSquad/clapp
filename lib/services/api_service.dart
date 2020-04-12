@@ -5,6 +5,7 @@ import 'package:betogether/models/listActivities.dart';
 import 'package:betogether/models/listEvents.dart';
 import 'package:betogether/services/cognito_service.dart';
 import 'package:betogether/services/pools_vars.dart' as global;
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 
 const rootUrl = "https://edrxliv83i.execute-api.eu-west-2.amazonaws.com/dev";
@@ -35,14 +36,27 @@ class APIService {
   }
 
 
-  Future<String> postActivity(Activity activity) async {
+  Future<int> postActivity(Activity activity) async {
+    await _userService.init();
     var url = rootUrl + "/activities";
     var payload = activity.toJson();
+
+    var auth = await buildAuthenticationHeader();
+    var user = await _userService.getCurrentUser();
+    payload['id'] = '1';
+    payload['date'] = '1';
+    payload['user'] = user.sub;
+    print(payload);
+
     var response = await http.post(url,
-        headers: {'auth': buildAuthenticationHeader()},
-        body: payload
+        headers: {'Authorization': auth},
+        body: json.encode(payload)
     );
-    return response.body;
+
+    print(response.statusCode);
+    print(response.body);
+
+    return jsonDecode(response.body)['status'];
   }
 
   Future<int> likeItem(int id) async {
@@ -71,23 +85,33 @@ class APIService {
     return list;
   }
 
-  Future<String> postEvent(Event event) async {
-    var url = rootUrl + "/activities";
+  Future<int> postEvent(Event event) async {
+    await _userService.init();
+    var url = rootUrl + "/events";
     var payload = event.toJson();
 
+    var auth = await buildAuthenticationHeader();
+    var user = await _userService.getCurrentUser();
+    payload['id'] = '1';
+    payload['date'] = '1';
+    payload['user'] = user.sub;
+    print(payload);
+
     var response = await http.post(url,
-        headers: {'auth': buildAuthenticationHeader()},
-        body: payload
+        headers: {'Authorization': auth},
+        body: json.encode(payload)
     );
 
-    return response.body;
+    print(response.statusCode);
+    print(response.body);
+
+    return jsonDecode(response.body)['status'];
   }
 
-  String buildAuthenticationHeader() {
-    _userService.getIdToken().then((value) {
-      return "Authorization: $value";
-    });
+  Future<String> buildAuthenticationHeader() async {
+     await _userService.init();
+     var auth = await _userService.getIdToken();
 
-    return null;
+     return auth;
   }
 }
