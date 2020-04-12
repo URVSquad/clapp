@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:betogether/models/activity.dart';
 import 'package:betogether/models/event.dart';
 import 'package:betogether/models/categories.dart';
+import 'package:betogether/screens/add/addScreen.dart';
 import 'package:betogether/screens/modals/flushbar_modal.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,8 @@ import 'package:flutter_duration_picker/flutter_duration_picker.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:betogether/services/api_service.dart';
+
+import '../interfaceScreen.dart';
 
 class NewItemScreen extends StatefulWidget {
   bool event;
@@ -394,6 +397,7 @@ class _NewItemScreenState extends State<NewItemScreen> {
                             _newItem.url = _url;
                             _newItem.hashtag = _hashtag;
                             _newItem.category = _category.toString();
+                            _newItem.image = _base64image;
 
                             if(widget.event) {
                               _newItem.duration = _duration;
@@ -402,7 +406,12 @@ class _NewItemScreenState extends State<NewItemScreen> {
                             }
 
                             sendItem ();
-                            Navigator.pop(context);
+                            Navigator.pushReplacement(
+                              context,
+                              new MaterialPageRoute(
+                                  builder: (context) =>
+                                  new InterfacePage(flushbar: Modal().flushbar("Aportación registrada correctamente!"))),
+                            );
                           }
                           else {
                             Modal().flushbar('Faltan campos por completar!', type: 'error').show(context);

@@ -49,11 +49,11 @@ class _AddScreenState extends State<AddScreen> {
                               builder: (context) => new NewItemScreen(false)),
                         );
                       }else{
-                        //Modal().flushbar('Necesitas una cuenta para poder añadir un recurso!').show(context);
-                        Navigator.push(
+                        Modal().flushbar('Necesitas una cuenta para poder añadir un recurso!').show(context);
+                        /*Navigator.push(
                             context,
                             new MaterialPageRoute(
-                            builder: (context) => new NewItemScreen(false)));
+                            builder: (context) => new NewItemScreen(false)));*/
                       }
                     },
                   ),
@@ -72,11 +72,11 @@ class _AddScreenState extends State<AddScreen> {
                             builder: (context) => new NewItemScreen(true)),
                         );
                       }else{
-                        //Modal().flushbar('Neceistas una cuenta para poder añadir un recurso!').show(context);
-                        Navigator.push(
+                        Modal().flushbar('Neceistas una cuenta para poder añadir un recurso!').show(context);
+                        /*Navigator.push(
                             context,
                             new MaterialPageRoute(
-                            builder: (context) => new NewItemScreen(true)));
+                            builder: (context) => new NewItemScreen(true)));*/
                       }
                     },
                   ),
