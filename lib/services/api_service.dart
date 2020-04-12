@@ -5,6 +5,7 @@ import 'package:betogether/models/listActivities.dart';
 import 'package:betogether/models/listEvents.dart';
 import 'package:betogether/services/cognito_service.dart';
 import 'package:betogether/services/pools_vars.dart' as global;
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 
 // TODO proteger maybe
@@ -23,13 +24,23 @@ class APIService {
 
 
   Future<int> postActivity(Activity activity) async {
+    await _userService.init();
     var url = rootUrl + "/activities";
     var payload = activity.toJson();
 
+    var auth = await buildAuthenticationHeader();
+    print(auth);
+    payload['id'] = '1';
+    payload['date'] = '1';
+    print(payload);
+
     var response = await http.post(url,
-        headers: {'auth': buildAuthenticationHeader()},
+        headers: {'Authorization': auth},
         body: payload
     );
+
+    print(response.statusCode);
+    print(response.body);
 
     return jsonDecode(response.body)['status'];
   }
@@ -42,22 +53,25 @@ class APIService {
   }
 
   Future<int> postEvent(Event event) async {
+    await _userService.init();
     var url = rootUrl + "/activities";
     var payload = event.toJson();
 
+    var auth = await buildAuthenticationHeader();
+    print(auth);
+
     var response = await http.post(url,
-        headers: {'auth': buildAuthenticationHeader()},
+        headers: {'Authorization': auth},
         body: payload
     );
 
     return jsonDecode(response.body)['status'];
   }
 
-  String buildAuthenticationHeader() {
-    _userService.getIdToken().then((value) {
-      return "Authorization: $value";
-    });
+  Future<String> buildAuthenticationHeader() async {
+     await _userService.init();
+     var auth = await _userService.getIdToken();
 
-    return null;
+     return auth;
   }
 }

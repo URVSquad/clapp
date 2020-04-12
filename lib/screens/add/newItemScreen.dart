@@ -198,43 +198,49 @@ class _NewItemScreenState extends State<NewItemScreen> {
   }
 
   Future<bool> sendItem() async {
-
     APIService api = new APIService();
     UserService _userService = new UserService(userPool);
     await _userService.init();
+    Future<bool> auth = _userService.checkAuthenticated();
 
-    if (await _userService.checkAuthenticated()) {
-      if (widget.event) {
-        Future<int> future = api.postEvent(_newItem);
-        future.then((value) async {
-          if (value == 200) {
-            print("OK");
-            return true;
-          } else {
-            print("NO OK");
-            Modal().flushbar('Error inesperado', type: 'error').show(context);
-            return false;
-          }
-        });
+    auth.then((value) async {
+      if (value) {
+        if (widget.event) {
+          Future<int> future = api.postEvent(_newItem);
+          future.then((value) async {
+            if (value == 200) {
+              print("OK");
+              return true;
+            } else {
+              print("NO OK");
+              print(value);
+              Modal().flushbar('Error inesperado', type: 'error').show(context);
+              return false;
+            }
+          });
+        } else {
+          Future<int> future = api.postActivity(_newItem);
+          future.then((value) async {
+            if (value == 200) {
+              print("OK");
+              return true;
+            } else {
+              print("NO OK");
+              print(value);
+              Modal().flushbar('Error inesperado', type: 'error').show(context);
+              return false;
+            }
+          });
+        }
       } else {
-        Future<int> future = api.postActivity(_newItem);
-        future.then((value) async {
-          if (value == 200) {
-            print("OK");
-            return true;
-          } else {
-            print("NO OK");
-            Modal().flushbar('Error inesperado', type: 'error').show(context);
-            return false;
-          }
-        });
+        Modal()
+            .flushbar('Error al verificar tu cuenta de usuario!', type: 'error')
+            .show(context);
+        return false;
       }
-    } else {
-      Modal()
-          .flushbar('Error al verificar tu cuenta de usuario!', type: 'error')
-          .show(context);
       return false;
-    }
+    });
+    return false;
   }
 
   bool validate() {
@@ -378,9 +384,19 @@ class _NewItemScreenState extends State<NewItemScreen> {
                             hashtag: _hashtag,
                             category: _category.toString(),
                             image: _base64image,
-                            start: DateTime(_startDate.year, _startDate.month, _startDate.day, _startTime.hour, _startTime.minute),
-                            end: DateTime(_startDate.year, _startDate.month, _startDate.day, _startTime.hour, _startTime.minute).add(Duration(minutes: _duration))
-                        );
+                            start: DateTime(
+                                _startDate.year,
+                                _startDate.month,
+                                _startDate.day,
+                                _startTime.hour,
+                                _startTime.minute),
+                            end: DateTime(
+                                    _startDate.year,
+                                    _startDate.month,
+                                    _startDate.day,
+                                    _startTime.hour,
+                                    _startTime.minute)
+                                .add(Duration(minutes: _duration)));
                       else
                         _newItem = new Activity(
                             title: _title,
@@ -391,6 +407,7 @@ class _NewItemScreenState extends State<NewItemScreen> {
                             image: _base64image);
 
                       sendItem().then((value) async {
+                        print(value);
                         if (value) {
                           Navigator.pushReplacement(
                             context,
