@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:betogether/models/activity.dart';
 import 'package:betogether/models/event.dart';
 import 'package:betogether/models/categories.dart';
+import 'package:betogether/screens/modals/flushbar_modal.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_duration_picker/flutter_duration_picker.dart';
@@ -20,29 +21,41 @@ class NewItemScreen extends StatefulWidget {
 
 class _NewItemScreenState extends State<NewItemScreen> {
 
-  var _category;
+  final _formKey = GlobalKey<FormState>();
+
+  var _dateColor = Colors.black12;
+  var _timeColor = Colors.black12;
+  var _durationColor = Colors.black12;
+
   Text _titleText;
   Text _dateButtonText = Text("Seleccionar fecha");
   Text _timeButtonText = Text("Seleccionar hora");
   Text _durationButtonText = Text("Seleccionar duración");
+
+  String _title;
+  String _url;
+  String _description;
+  String _hashtag;
+  var _category;
   TimeOfDay _startTime;
   DateTime _startDate;
+  int _duration = 0;
   File _imageFile;
-  final _formKey = GlobalKey<FormState>();
+  String _base64image;
 
   var _newItem;
 
   Widget showCategories(){
     if(widget.event) {
-      return DropdownButton<eventCategories>(
+      return DropdownButtonFormField<eventCategories>(
+          decoration: InputDecoration(
+            labelText: 'Categoría'),
           isExpanded: true,
-          hint: Text('Categoría *'),
           value: _category,
           icon: Icon(Icons.arrow_drop_down),
           onChanged: (newValue) {
             setState(() {
               _category = newValue;
-              _newItem.category = newValue;
             });
           },
           items: eventCategories.values.map((eventCategories category) {
@@ -50,19 +63,22 @@ class _NewItemScreenState extends State<NewItemScreen> {
                 value: category,
                 child: Text(category.toString().split('.').last)
             );
-          }).toList()
+          }).toList(),
+        validator: (eventCategories cat){
+          return cat == null ? 'Tienes que elegir una categoría!' : null;
+        },
       );
     }
     else{
-      return DropdownButton<activityCategories>(
+      return DropdownButtonFormField<activityCategories>(
+          decoration: InputDecoration(
+              labelText: 'Categoría'),
           isExpanded: true,
-          hint: Text('Categoría *'),
           value: _category,
           icon: Icon(Icons.arrow_drop_down),
           onChanged: (newValue) {
             setState(() {
               _category = newValue;
-              _newItem.category = newValue;
             });
           },
           items: activityCategories.values.map((activityCategories category) {
@@ -70,7 +86,10 @@ class _NewItemScreenState extends State<NewItemScreen> {
                 value: category,
                 child: Text(category.toString().split('.').last)
             );
-          }).toList()
+          }).toList(),
+        validator: (activityCategories cat){
+          return cat == null ? 'Tienes que elegir una categoría!' : null;
+        },
       );
     }
   }
@@ -79,13 +98,12 @@ class _NewItemScreenState extends State<NewItemScreen> {
     _imageFile = await ImagePicker.pickImage(source: ImageSource.gallery);
   }
 
-  Widget showImage(){
-
+  Widget showImage(BuildContext context){
       if(_imageFile==null){
         return Text("No se ha seleccionado ninguna imagen");
       }
       else{
-        return Image.file(_imageFile);
+        return Image.file(_imageFile, height: 200, width: 200,);
       }
   }
 
@@ -137,6 +155,10 @@ class _NewItemScreenState extends State<NewItemScreen> {
                 onPressed: (){
                   selectDate(context);
                 },
+                highlightedBorderColor: Color(0xffc5e1a5),
+                borderSide: BorderSide(
+                  color: _dateColor
+                ),
               ),
             ),
             ListTile(
@@ -145,10 +167,14 @@ class _NewItemScreenState extends State<NewItemScreen> {
               ),
             ListTile(
               title: OutlineButton(
+                highlightedBorderColor: Color(0xffc5e1a5),
                 child: _timeButtonText,
                 onPressed: (){
                   selectTime(context);
                 },
+                borderSide: BorderSide(
+                    color: _timeColor
+                ),
               ),
             ),
 
@@ -159,6 +185,10 @@ class _NewItemScreenState extends State<NewItemScreen> {
             ListTile(
               title: OutlineButton(
                 child: _durationButtonText,
+                highlightedBorderColor: Color(0xffc5e1a5),
+                borderSide: BorderSide(
+                    color: _durationColor
+                ),
                 onPressed: () async {
                   Duration resultingDuration = await  showDurationPicker(
                     context: context,
@@ -167,7 +197,7 @@ class _NewItemScreenState extends State<NewItemScreen> {
                   setState(() {
                     _durationButtonText = Text(
                     resultingDuration.inHours.toString()+'h '+((resultingDuration.inMinutes)%60).toString()+'min');
-                    _newItem.duration = resultingDuration.inMinutes;
+                    _duration = resultingDuration.inMinutes;
                   });
                 },
               ),
@@ -206,14 +236,39 @@ class _NewItemScreenState extends State<NewItemScreen> {
     }
   }
 
+  bool validate() {
+    bool val = true;
+    if(widget.event){
+      if (_startDate == null) {
+        _dateColor = Colors.red;
+        val = false;
+      }
+      else _dateColor = Colors.black12;
+      if (_startTime == null) {
+        _timeColor = Colors.red;
+        val = false;
+      }
+      else _timeColor = Colors.black12;
+      if (_duration == 0) {
+        _durationColor = Colors.red;
+        val = false;
+      }
+      else _durationColor = Colors.black12;
+      setState(() {
+      });
+    }
+
+    return _formKey.currentState.validate() && val;
+    }
+
+
+
   @override
   Widget build(BuildContext context) {
     if(widget.event){
-      _newItem = new Event();
       _titleText = Text("Crear evento");
     }
     else {
-      _newItem = new Activity();
       _titleText = Text("Crear actividad");
     }
       return new Scaffold(
@@ -229,11 +284,11 @@ class _NewItemScreenState extends State<NewItemScreen> {
                       child: ListTile(
                         title: TextFormField(
                           decoration: InputDecoration(
-                              labelText: 'Título *'),
+                              labelText: 'Título'),
                           keyboardType: TextInputType.text,
                           onSaved: (String title) {
                             setState(() {
-                              _newItem.title = title;
+                              _title = title;
                             });
                           },
                           validator: (String value) {
@@ -253,12 +308,12 @@ class _NewItemScreenState extends State<NewItemScreen> {
                       child: ListTile(
                         title: TextFormField(
                           decoration: InputDecoration(
-                              labelText: 'Descripción *'),
+                              labelText: 'Descripción'),
                           keyboardType: TextInputType.multiline,
                           minLines: 3,
                           maxLines: null,
                           onSaved: (String desc) {
-                            _newItem.description = desc;
+                            _description = desc;
                           },
                           validator: (String value) {
                             return value.isEmpty ? 'Tienes que introducir una descripción!' : null;
@@ -271,10 +326,10 @@ class _NewItemScreenState extends State<NewItemScreen> {
                       child: ListTile(
                         title: TextFormField(
                           decoration: InputDecoration(
-                              labelText: 'Enlace *'),
+                              labelText: 'Enlace'),
                           keyboardType: TextInputType.url,
                           onSaved: (String url) {
-                            _newItem.url = url;
+                            _url = url;
                           },
                           validator: (String value) {
                             return value.isEmpty ? 'Tienes que introducir un enlace!' : null;
@@ -291,17 +346,15 @@ class _NewItemScreenState extends State<NewItemScreen> {
                                 title:OutlineButton(
                                   child: Text("Selecciona una imagen"),
                                   onPressed: (){
-                                    selectImage();
-                                    setState((){
-                                      _newItem.image = base64Encode(_imageFile.readAsBytesSync());
+                                      selectImage();
+                                      setState((){
+                                        _base64image = base64Encode(_imageFile.readAsBytesSync());
                                     });
                                   },
                                 ),
                               ),
                               ListTile(
-                                  title: _imageFile == null
-                                      ? Text("No se ha seleccionado ninguna imagen")
-                                      : Image.file(_imageFile)
+                                  title: showImage(context)
                               )
                             ]
                         )
@@ -311,13 +364,10 @@ class _NewItemScreenState extends State<NewItemScreen> {
                       child: ListTile(
                         title: TextFormField(
                           decoration: InputDecoration(
-                              labelText: 'Hashtag *'),
+                              labelText: 'Hashtag'),
                           keyboardType: TextInputType.url,
                           onSaved: (String hashtag) {
-                            _newItem.hashtag = hashtag;
-                          },
-                          validator: (String value) {
-                            return value.isEmpty ? 'Tienes que introducir un hashtag!' : null;
+                            _hashtag = hashtag;
                           },
                         ),
                       ),
@@ -334,8 +384,30 @@ class _NewItemScreenState extends State<NewItemScreen> {
                         child: Text('Enviar'),
 
                         onPressed: () {
-                          sendItem();
-                          Navigator.pop(context);
+                          if (validate()) {
+
+                            if(widget.event) _newItem = new Event();
+                            else _newItem = new Activity();
+
+                            _newItem.title = _title;
+                            _newItem.description = _description;
+                            _newItem.url = _url;
+                            _newItem.hashtag = _hashtag;
+                            _newItem.category = _category.toString();
+
+                            if(widget.event) {
+                              _newItem.duration = _duration;
+                              _newItem.start = _startDate.toString() +
+                                  _startTime.toString(); //TODO formato???
+                            }
+
+                            sendItem ();
+                            Navigator.pop(context);
+                          }
+                          else {
+                            Modal().flushbar('Faltan campos por completar!', type: 'error').show(context);
+                          }
+
                         },
                       ),
                     )
