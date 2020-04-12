@@ -18,10 +18,9 @@ class Activity{
     return Activity(
         id: parsedJson['id'],
         title: parsedJson['title'],
-        //url: parsedJson['url'],
-        image: parsedJson['title'],
+        url: parsedJson['url'],
+        image: parsedJson['image'],
         description: parsedJson['description'],
-        //hashtag: parsedJson['hashtag'],
         date: parsedJson['creation'],
         category: parsedJson['category'],
         votes: parsedJson['votes']

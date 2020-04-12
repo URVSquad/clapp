@@ -1,7 +1,6 @@
 import 'categories.dart';
-
 class Event {
-  String id;
+  int id;
   String title;
   String url;
   String image;
@@ -9,11 +8,12 @@ class Event {
   String hashtag;
   String category;
   String date;
-  String start;
-  int duration;
+  DateTime start;
+  DateTime end;
+  int votes;
 
-  Event({this.id, this.title, this.url, this.image, this.description,
-    this.hashtag, this.category, this.date, this.start,this.duration});
+  Event({this.id, this.title, this.image, this.description,
+    this.category, this.start,this.end, this.votes, this.url, this.hashtag});
 
   factory Event.fromJson(Map<String, dynamic> parsedJson){
     return Event(
@@ -23,9 +23,9 @@ class Event {
         image: parsedJson['image'],
         description: parsedJson['description'],
         hashtag: parsedJson['hashtag'],
-        date: parsedJson['date'],
-        start: parsedJson['start'],
-        duration: parsedJson['date']
+        start: DateTime.parse(parsedJson['event_start']),
+        end: DateTime.parse(parsedJson['event_end']),
+    votes: parsedJson['votes']
     );
   }
 

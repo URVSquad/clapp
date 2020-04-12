@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:betogether/models/activity.dart';
 import 'package:betogether/models/event.dart';
 import 'package:betogether/models/listActivities.dart';
+import 'package:betogether/models/listEvents.dart';
 import 'package:betogether/services/cognito_service.dart';
 import 'package:betogether/services/pools_vars.dart' as global;
 import 'package:http/http.dart' as http;
@@ -33,10 +34,11 @@ class APIService {
     return jsonDecode(response.body)['status'];
   }
 
-  Future<String> getEvents() async {
+  Future<ListEvents> getEvents() async {
     var url = rootUrl + "/events";
     var response = await http.get(url);
-    return response.body;
+    ListEvents list = ListEvents.fromJson(jsonDecode(response.body));
+    return list;
   }
 
   Future<int> postEvent(Event event) async {

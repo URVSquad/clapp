@@ -397,8 +397,8 @@ class _NewItemScreenState extends State<NewItemScreen> {
                                 hashtag: _hashtag,
                                 category: _category.toString(),
                                 image: _base64image,
-                                start: _startDate.toString() + _startTime.toString(), //TODO formato???
-                               duration: _duration
+                                start: _startDate, //TODO formato???
+                                end: _startDate
                               );
                             else _newItem = new Activity(title: _title,
                               description: _description,

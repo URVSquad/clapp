@@ -6,7 +6,7 @@ class ListEvents{
   ListEvents({this.list});
 
   factory ListEvents.fromJson(Map<String, dynamic> parsedJson){
-    var list = parsedJson['rows'] as List;
+    var list = parsedJson['events'] as List;
     list = list.map((i) => Event.fromJson(i)).toList();
     return ListEvents(
         list: list
