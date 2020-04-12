@@ -66,21 +66,31 @@ class _ListActivitiesModuleState extends State<ListActivitiesModule> {
     );
   }
 
-  final image = new Container(
-      margin: new EdgeInsets.fromLTRB(10, 12.5, 0, 10),
-      height: 100,
-      width: 140,
-      child: FittedBox(
-        child: Image.asset('assets/img/yoga.jpg'),
-        fit: BoxFit.cover,
-      ));
+  Container getImage(String image){
+    if (image==null){
+      return Container(margin: new EdgeInsets.fromLTRB(10, 12.5, 0, 10),
+          height: 100,
+          width: 140,
+          child: FittedBox(
+            child: Image.asset("assets/img/imageNotFound.jpg"),
+            fit: BoxFit.cover,
+          ));
+    }else{
+      return Container(margin: new EdgeInsets.fromLTRB(10, 12.5, 0, 10),
+          height: 100,
+          width: 140,
+          child: FittedBox(
+            child: Image.network(image),
+            fit: BoxFit.cover,
+          ));
+    }
+  }
 
   Container getCard(color){
     return Container(
       height: 124.0,
       decoration: new BoxDecoration(
         color: new Color(int.parse(color)),
-        //FIXME: This should be with the class color
         shape: BoxShape.rectangle,
         borderRadius: new BorderRadius.circular(8.0),
         boxShadow: [
@@ -132,11 +142,11 @@ class _ListActivitiesModuleState extends State<ListActivitiesModule> {
                   );
                 },
                 child: new Stack(
-                  children: <Widget>[getCard(color), image, cardContent(activity)],
+                  children: <Widget>[getCard(color), getImage(activity.image), cardContent(activity)],
                 ));
           },
         ),
       ],
-    );
+    );;
   }
 }

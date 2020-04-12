@@ -96,14 +96,25 @@ class _ListActivitiesModuleState extends State<ListEventsModule> {
     );
   }
 
-  final image = new Container(
-      margin: new EdgeInsets.fromLTRB(10, 12.5, 0, 10),
-      height: 100,
-      width: 140,
-      child: FittedBox(
-        child: Image.asset('assets/img/yoga.jpg'),
-        fit: BoxFit.cover,
-      ));
+  Container getImage(String image){
+    if (image==null){
+      return Container(margin: new EdgeInsets.fromLTRB(10, 12.5, 0, 10),
+          height: 100,
+          width: 140,
+          child: FittedBox(
+            child: Image.asset("assets/img/imageNotFound.jpg"),
+            fit: BoxFit.cover,
+          ));
+    }else{
+      return Container(margin: new EdgeInsets.fromLTRB(10, 12.5, 0, 10),
+          height: 100,
+          width: 140,
+          child: FittedBox(
+            child: Image.network(image),
+            fit: BoxFit.cover,
+          ));
+    }
+  }
 
   Container getCard(color) {
     return Container(
@@ -163,7 +174,7 @@ class _ListActivitiesModuleState extends State<ListEventsModule> {
                 child: new Stack(
                   children: <Widget>[
                     getCard(color),
-                    image,
+                    getImage(event.image),
                     cardContent(event)
                   ],
                 ));
